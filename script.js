@@ -49,6 +49,27 @@ function viderGallery() {
     baliseGallery.innerHTML = "";
 }
 
+/**
+ * @param {Array} categories Liste des catégories (sans TOUS) avec leurs identifiants et leurs nom
+ */
+function genererBouttons(categories) {
+    let categoriesAvecTous = [{ id: 0, name: "Tous" }];
+    categoriesAvecTous.push(...categories);
+    let balisePortfolio = document.querySelector(".filtres"); // élément parent pour l'ajout des boutons
+    for (let i = 0; i < categoriesAvecTous.length; i++) {
+        const element = categoriesAvecTous[i];
+
+        let baliseElementEnfant = document.createElement("button");
+        baliseElementEnfant.classList.add("filtres-rapides");
+        baliseElementEnfant.classList.add("filtres-inactif");
+        baliseElementEnfant.innerText = element.name;
+        baliseElementEnfant.id = element.name.split(" ")[0].toLowerCase();
+        balisePortfolio.appendChild(baliseElementEnfant);
+    }
+
+    return categoriesAvecTous;
+}
+
 // ******** Fonctions en cours de dev ********
 function filtrerTravaux(travaux, categories, filtreApplique, verbose = 0) {
     let travauxfiltres = [];
@@ -76,25 +97,10 @@ function filtrerTravaux(travaux, categories, filtreApplique, verbose = 0) {
     return travauxfiltres;
 }
 
-/**
- *
- * @param {Array} categories Liste des catégories (sans TOUS) avec leurs identifiants et leurs nom
- */
-function genererBouttons(categories) {
-    console.log("Hello world!");
-    let categoriesAvecTous = [{ id: 0, name: "Tous" }];
-    categoriesAvecTous.push(...categories);
-    let balisePortfolio = document.querySelector(".filtres"); // élément parent pour l'ajout des boutons
-    for (let i = 0; i < categoriesAvecTous.length; i++) {
-        const element = categoriesAvecTous[i];
-
-        let baliseElementEnfant = document.createElement("button");
-        baliseElementEnfant.classList.add("filtres-rapides");
-        baliseElementEnfant.classList.add("filtres-inactif");
-        baliseElementEnfant.id = element.id;
-        baliseElementEnfant.innerText = element.name;
-        balisePortfolio.appendChild(baliseElementEnfant);
-    }
+function toggleButton(buttonId) {
+    console.log(buttonId);
+    let balise = document.querySelector(`#${buttonId}`);
+    console.log(balise);
 }
 
 // ******** Main ********
@@ -103,21 +109,17 @@ let travauxEtCategories = await recupererTravauxEtCategories("http://localhost:5
 let travaux = travauxEtCategories[0];
 let categories = travauxEtCategories[1];
 
-// console.log(categories);
-// console.log(travaux);
+categories = genererBouttons(categories); // on génère les boutons avec les infos de la route /categories
 
-genererBouttons(categories);
-// On fait ce que l'on peut poto !!!
-// let filtreApplique = "tous"; // paramètre qui servira à filtrer les travaux
-// let baliseBoutons = document.querySelectorAll(".filtres button"); // Récupération des bouttons
-// let travauxFiltres = [];
-// for (let i = 0; i < baliseBoutons.length; i++) {
-//     const button = baliseBoutons[i];
-//     button.addEventListener("click", (event) => {
-//         viderGallery(); //on vide la gallery
-//         filtreApplique = event.target.name; // on recupère le nom associé au bouton
-//         travauxFiltres = filtrerTravaux(travaux, categories, filtreApplique, 1); // On applique le filtre sur les traveaux en fonction de la catégorie
-//         //on affiche les travaux filtrés
-//         afficherTravaux(travauxFiltres);
-//     });
-// }
+let baliseBoutons = document.querySelectorAll(".filtres button"); //Récupération des bouttons
+let travauxFiltres = [...travaux];
+afficherTravaux(travauxFiltres); // on met tous les travaux pour le démarrage
+
+for (let i = 0; i < baliseBoutons.length; i++) {
+    const element = baliseBoutons[i];
+
+    element.addEventListener("click", (event) => {
+        //console.log(event.target.id); // on récupère le texte à l'intérieur
+        toggleButton(event.target.id);
+    });
+}
