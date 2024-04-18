@@ -97,18 +97,45 @@ function filtrerTravaux(travaux, categories, filtreApplique, verbose = 0) {
     return travauxfiltres;
 }
 
-function toggleButton(buttonId) {
+function toggleButton(buttonId, listeFiltresID) {
     let balise = document.querySelector(`#${buttonId}`);
-    console.log(balise.classList);
-    if (balise.classList.contains("filtre-inactif")) {
-        console.log("A");
-        balise.classList.remove("filtre-inactif");
-        balise.classList.add("filtre-actif");
+
+    // on met tout les autres boutons en mode off
+    let baliseAllButtons = document.querySelectorAll("button");
+    let baliseBoutonTous = document.querySelector("#tous");
+    if (buttonId === "tous") {
+        if (baliseBoutonTous.classList.contains("filtre-inactif")) {
+            baliseBoutonTous.classList.remove("filtre-inactif");
+            baliseBoutonTous.classList.add("filtre-actif");
+            for (let i = 1; i < baliseAllButtons.length; i++) {
+                // on commence a 1 car 0 c'est le bouton tous
+                const button = baliseAllButtons[i];
+                listeFiltresID.includes(button.id) ? null : listeFiltresID.push(button.id);
+                if (button.classList.contains("filtre-actif")) {
+                    button.classList.remove("filtre-actif");
+                    button.classList.add("filtre-inactif");
+                }
+            }
+        } else {
+            baliseBoutonTous.classList.remove("filtre-actif");
+            baliseBoutonTous.classList.add("filtre-inactif");
+            listeFiltresID = [];
+        }
     } else {
-        console.log("B");
-        balise.classList.remove("filtre-actif");
-        balise.classList.add("filtre-inactif");
+        baliseBoutonTous.classList.remove("filtre-actif");
+        baliseBoutonTous.classList.add("filtre-inactif");
+
+        if (balise.classList.contains("filtre-inactif")) {
+            balise.classList.remove("filtre-inactif");
+            balise.classList.add("filtre-actif");
+            listeFiltresID.push(balise.id);
+        } else {
+            balise.classList.remove("filtre-actif");
+            balise.classList.add("filtre-inactif");
+            listeFiltresID = listeFiltresID.filter((element) => element !== balise.id);
+        }
     }
+    return listeFiltresID;
 }
 
 // ******** Main ********
@@ -120,6 +147,7 @@ let categories = travauxEtCategories[1];
 categories = genererBouttons(categories); // on génère les boutons avec les infos de la route /categories
 
 let baliseBoutons = document.querySelectorAll(".filtres button"); //Récupération des bouttons
+let listeFiltresID = [];
 let travauxFiltres = [...travaux];
 afficherTravaux(travauxFiltres); // on met tous les travaux pour le démarrage
 
@@ -128,6 +156,7 @@ for (let i = 0; i < baliseBoutons.length; i++) {
 
     element.addEventListener("click", (event) => {
         //console.log(event.target.id); // on récupère le texte à l'intérieur
-        toggleButton(event.target.id);
+        listeFiltresID = toggleButton(event.target.id, listeFiltresID);
+        console.log(listeFiltresID);
     });
 }
