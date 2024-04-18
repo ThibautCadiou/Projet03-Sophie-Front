@@ -270,6 +270,11 @@ main {
     gap: 10px;
 }
 
+.filtres button {
+    color: var(--main-color);
+    border: 2px solid var(--main-color);
+}
+
 .filtres-rapides {
     font-family: "Syne";
     font-weight: bold;
