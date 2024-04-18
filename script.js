@@ -61,7 +61,7 @@ function genererBouttons(categories) {
 
         let baliseElementEnfant = document.createElement("button");
         baliseElementEnfant.classList.add("filtres-rapides");
-        baliseElementEnfant.classList.add("filtres-inactif");
+        baliseElementEnfant.classList.add("filtre-inactif");
         baliseElementEnfant.innerText = element.name;
         baliseElementEnfant.id = element.name.split(" ")[0].toLowerCase();
         balisePortfolio.appendChild(baliseElementEnfant);
@@ -98,9 +98,17 @@ function filtrerTravaux(travaux, categories, filtreApplique, verbose = 0) {
 }
 
 function toggleButton(buttonId) {
-    console.log(buttonId);
     let balise = document.querySelector(`#${buttonId}`);
-    console.log(balise);
+    console.log(balise.classList);
+    if (balise.classList.contains("filtre-inactif")) {
+        console.log("A");
+        balise.classList.remove("filtre-inactif");
+        balise.classList.add("filtre-actif");
+    } else {
+        console.log("B");
+        balise.classList.remove("filtre-actif");
+        balise.classList.add("filtre-inactif");
+    }
 }
 
 // ******** Main ********
