@@ -70,6 +70,60 @@ function genererBouttons(categories) {
     return categoriesAvecTous;
 }
 
+/**
+ * Fonction qui permet de mettre a jour les onglets de filtrage ainsi qu'une liste des catégorie à afficher
+ * @param {string} buttonId Id du bouton sur lequel le click a été fait
+ * @param {Array} listeFiltresID Liste contenant les filtres actifs à appliquer lors de l'affichage
+ * @returns La liste 'listeFiltresID' MAJ
+ */
+function toggleButton(buttonId, listeFiltresID) {
+    let balise = document.querySelector(`#${buttonId}`);
+
+    // on met tout les autres boutons en mode off
+    let baliseAllButtons = document.querySelectorAll("button");
+    let baliseBoutonTous = document.querySelector("#tous");
+    if (buttonId === "tous") {
+        listeFiltresID = [];
+        if (baliseBoutonTous.classList.contains("filtre-inactif")) {
+            baliseBoutonTous.classList.remove("filtre-inactif");
+            baliseBoutonTous.classList.add("filtre-actif");
+            for (let i = 1; i < baliseAllButtons.length; i++) {
+                // on commence a 1 car 0 c'est le bouton tous
+                const button = baliseAllButtons[i];
+                listeFiltresID.includes(button.id) ? null : listeFiltresID.push(button.id);
+                if (button.classList.contains("filtre-actif")) {
+                    button.classList.remove("filtre-actif");
+                    button.classList.add("filtre-inactif");
+                }
+            }
+        } else {
+            baliseBoutonTous.classList.remove("filtre-actif");
+            baliseBoutonTous.classList.add("filtre-inactif");
+            listeFiltresID = [];
+        }
+    } else {
+        baliseBoutonTous.classList.remove("filtre-actif");
+        baliseBoutonTous.classList.add("filtre-inactif");
+
+        if (listeFiltresID.includes(balise.id) && balise.classList.contains("filtre-inactif")) {
+            balise.classList.remove("filtre-inactif");
+            balise.classList.add("filtre-actif");
+            listeFiltresID = [balise.id];
+        } else {
+            if (balise.classList.contains("filtre-inactif")) {
+                balise.classList.remove("filtre-inactif");
+                balise.classList.add("filtre-actif");
+                listeFiltresID.push(balise.id);
+            } else {
+                balise.classList.remove("filtre-actif");
+                balise.classList.add("filtre-inactif");
+                listeFiltresID = listeFiltresID.filter((element) => element !== balise.id);
+            }
+        }
+    }
+    return listeFiltresID;
+}
+
 // ******** Fonctions en cours de dev ********
 function filtrerTravaux(travaux, categories, filtreApplique, verbose = 0) {
     let travauxfiltres = [];
@@ -95,47 +149,6 @@ function filtrerTravaux(travaux, categories, filtreApplique, verbose = 0) {
             break;
     }
     return travauxfiltres;
-}
-
-function toggleButton(buttonId, listeFiltresID) {
-    let balise = document.querySelector(`#${buttonId}`);
-
-    // on met tout les autres boutons en mode off
-    let baliseAllButtons = document.querySelectorAll("button");
-    let baliseBoutonTous = document.querySelector("#tous");
-    if (buttonId === "tous") {
-        if (baliseBoutonTous.classList.contains("filtre-inactif")) {
-            baliseBoutonTous.classList.remove("filtre-inactif");
-            baliseBoutonTous.classList.add("filtre-actif");
-            for (let i = 1; i < baliseAllButtons.length; i++) {
-                // on commence a 1 car 0 c'est le bouton tous
-                const button = baliseAllButtons[i];
-                listeFiltresID.includes(button.id) ? null : listeFiltresID.push(button.id);
-                if (button.classList.contains("filtre-actif")) {
-                    button.classList.remove("filtre-actif");
-                    button.classList.add("filtre-inactif");
-                }
-            }
-        } else {
-            baliseBoutonTous.classList.remove("filtre-actif");
-            baliseBoutonTous.classList.add("filtre-inactif");
-            listeFiltresID = [];
-        }
-    } else {
-        baliseBoutonTous.classList.remove("filtre-actif");
-        baliseBoutonTous.classList.add("filtre-inactif");
-
-        if (balise.classList.contains("filtre-inactif")) {
-            balise.classList.remove("filtre-inactif");
-            balise.classList.add("filtre-actif");
-            listeFiltresID.push(balise.id);
-        } else {
-            balise.classList.remove("filtre-actif");
-            balise.classList.add("filtre-inactif");
-            listeFiltresID = listeFiltresID.filter((element) => element !== balise.id);
-        }
-    }
-    return listeFiltresID;
 }
 
 // ******** Main ********
