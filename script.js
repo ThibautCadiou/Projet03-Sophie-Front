@@ -137,7 +137,7 @@ function toggleButton(buttonId, listeFiltresID) {
  * @param {number} verbose pouravoir un retour d'informations lors du debug
  * @returns La liste des travaux à afficher en fonction des filtres
  */
-// ******** Fonctions en cours de dev ********
+
 function filtrerTravaux(travaux, categories, listeFiltres, verbose = 0) {
     // on crée la liste des catégorie id en fonction de la liste des filtres
     let listeIDs = [];
@@ -165,6 +165,8 @@ function filtrerTravaux(travaux, categories, listeFiltres, verbose = 0) {
     console.log(travauxFiltres);
     return travauxFiltres;
 }
+
+// ******** Fonctions en cours de dev ********
 
 // ******** Main ********
 // On récupère les travaux et les catégories
