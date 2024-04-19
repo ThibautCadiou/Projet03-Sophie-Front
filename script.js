@@ -60,8 +60,12 @@ function genererBouttons(categories) {
         const element = categoriesAvecTous[i];
 
         let baliseElementEnfant = document.createElement("button");
+        if (i === 0) {
+            baliseElementEnfant.classList.add("filtre-actif");
+        } else {
+            baliseElementEnfant.classList.add("filtre-inactif");
+        }
         baliseElementEnfant.classList.add("filtres-rapides");
-        baliseElementEnfant.classList.add("filtre-inactif");
         baliseElementEnfant.innerText = element.name;
         baliseElementEnfant.id = element.name.split(" ")[0].toLowerCase();
         // baliseElementEnfant.id = element.name;
@@ -125,31 +129,41 @@ function toggleButton(buttonId, listeFiltresID) {
     return listeFiltresID;
 }
 
+/**
+ *
+ * @param {Array.<string>} travaux liste des travaux
+ * @param {Array} categories liste des catégories récupérées depuis l'API
+ * @param {Array} listeFiltres liste de string avec le nom des filtres appliqués
+ * @param {number} verbose pouravoir un retour d'informations lors du debug
+ * @returns La liste des travaux à afficher en fonction des filtres
+ */
 // ******** Fonctions en cours de dev ********
-function filtrerTravaux(travaux, categories, filtreApplique, verbose = 0) {
-    let travauxfiltres = [];
-    switch (filtreApplique) {
-        case "tous":
-            travauxfiltres = [...travaux];
-            verbose === 0 ? null : console.log('on applique le filtre "Tous"');
-            break;
-        case "objets":
-            travauxfiltres = [travaux[0]];
-            verbose === 0 ? null : console.log('on applique le filtre "Objets"');
-            break;
-        case "appartements":
-            travauxfiltres = [travaux[1]];
-            verbose === 0 ? null : console.log('on applique le filtre "Appartements"');
-            break;
-        case "hotel-et-restaurants":
-            travauxfiltres = [travaux[2]];
-            verbose === 0 ? null : console.log('on applique le filtre "Hotels & restaurants"');
-            break;
-        default:
-            console.log("Le filtre demandé n'existe pas mec ...");
-            break;
+function filtrerTravaux(travaux, categories, listeFiltres, verbose = 0) {
+    // on crée la liste des catégorie id en fonction de la liste des filtres
+    let listeIDs = [];
+    for (let i = 0; i < categories.length; i++) {
+        const categorie = categories[i];
+
+        let currentCategorieName = categorie.name;
+        let currentCategorieId = categorie.id;
+        if (listeFiltres.includes(currentCategorieName)) {
+            listeIDs.push(currentCategorieId);
+        }
     }
-    return travauxfiltres;
+    console.log(`
+    liste des ids: ${listeIDs}
+    `);
+
+    //on parcours les travaux et on ajoute a la liste des travaux ceux qui sont de la bonnes cat
+    let travauxFiltres = [];
+    for (let i = 0; i < travaux.length; i++) {
+        const element = travaux[i];
+        if (listeIDs.includes(element.categoryId)) {
+            travauxFiltres.push(element);
+        }
+    }
+    console.log(travauxFiltres);
+    return travauxFiltres;
 }
 
 // ******** Main ********
@@ -171,9 +185,8 @@ for (let i = 0; i < baliseBoutons.length; i++) {
     element.addEventListener("click", (event) => {
         //console.log(event.target.id); // on récupère le texte à l'intérieur
         listeFiltresID = toggleButton(event.target.id, listeFiltresID);
-        console.log(listeFiltresID);
+        let travauxFiltres = filtrerTravaux(travaux, categories, listeFiltresID, 1);
+        viderGallery();
+        afficherTravaux(travauxFiltres);
     });
 }
-
-// console.log(travaux[0].category);
-console.log(travaux[2]);
