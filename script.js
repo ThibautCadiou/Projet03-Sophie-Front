@@ -64,6 +64,7 @@ function genererBouttons(categories) {
         baliseElementEnfant.classList.add("filtre-inactif");
         baliseElementEnfant.innerText = element.name;
         baliseElementEnfant.id = element.name.split(" ")[0].toLowerCase();
+        // baliseElementEnfant.id = element.name;
         balisePortfolio.appendChild(baliseElementEnfant);
     }
 
@@ -90,7 +91,7 @@ function toggleButton(buttonId, listeFiltresID) {
             for (let i = 1; i < baliseAllButtons.length; i++) {
                 // on commence a 1 car 0 c'est le bouton tous
                 const button = baliseAllButtons[i];
-                listeFiltresID.includes(button.id) ? null : listeFiltresID.push(button.id);
+                listeFiltresID.includes(button.id) ? null : listeFiltresID.push(button.innerText);
                 if (button.classList.contains("filtre-actif")) {
                     button.classList.remove("filtre-actif");
                     button.classList.add("filtre-inactif");
@@ -105,19 +106,19 @@ function toggleButton(buttonId, listeFiltresID) {
         baliseBoutonTous.classList.remove("filtre-actif");
         baliseBoutonTous.classList.add("filtre-inactif");
 
-        if (listeFiltresID.includes(balise.id) && balise.classList.contains("filtre-inactif")) {
+        if (listeFiltresID.includes(balise.innerText) && balise.classList.contains("filtre-inactif")) {
             balise.classList.remove("filtre-inactif");
             balise.classList.add("filtre-actif");
-            listeFiltresID = [balise.id];
+            listeFiltresID = [balise.innerText];
         } else {
             if (balise.classList.contains("filtre-inactif")) {
                 balise.classList.remove("filtre-inactif");
                 balise.classList.add("filtre-actif");
-                listeFiltresID.push(balise.id);
+                listeFiltresID.push(balise.innerText);
             } else {
                 balise.classList.remove("filtre-actif");
                 balise.classList.add("filtre-inactif");
-                listeFiltresID = listeFiltresID.filter((element) => element !== balise.id);
+                listeFiltresID = listeFiltresID.filter((element) => element !== balise.innerText);
             }
         }
     }
@@ -173,3 +174,6 @@ for (let i = 0; i < baliseBoutons.length; i++) {
         console.log(listeFiltresID);
     });
 }
+
+// console.log(travaux[0].category);
+console.log(travaux[2]);
