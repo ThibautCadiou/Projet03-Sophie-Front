@@ -1,12 +1,11 @@
 // ******** Fonctions Fonctionnelles ********
-
 /**
  * Récupérer la liste des travaux et des catégories depuis l'API grace aux routes indiquées
  * @param {string} worksPath Le chemin ou l'url de l'api donnant la liste des travaux
  * @param {string} catPath Le chemin ou l'url de l'API donnant la lits edes catégories
  * @returns {Array} une liste dont le premier élément est la liste des travaux et le second la liste des catégories
  */
-async function recupererTravauxEtCategories(worksPath, catPath) {
+export async function recupererTravauxEtCategories(worksPath, catPath) {
     // Récupération des travaux
     const reponseWorks = await fetch(worksPath);
     const travaux = await reponseWorks.json();
@@ -22,7 +21,7 @@ async function recupererTravauxEtCategories(worksPath, catPath) {
  * Permet d'afficher la liste de travaux envoyé en paramètre
  * @param {Array} myList La liste des travaux à afficher
  */
-function afficherTravaux(myList) {
+export function afficherTravaux(myList) {
     const baliseParentFigure = document.querySelector(".gallery");
     for (let i = 0; i < myList.length; i++) {
         const element = myList[i];
@@ -44,7 +43,7 @@ function afficherTravaux(myList) {
 /**
  * On vide la gallery pour l'affichage des travaux filtré
  */
-function viderGallery() {
+export function viderGallery() {
     let baliseGallery = document.querySelector(".gallery");
     baliseGallery.innerHTML = "";
 }
@@ -52,7 +51,7 @@ function viderGallery() {
 /**
  * @param {Array} categories Liste des catégories (sans TOUS) avec leurs identifiants et leurs nom
  */
-function genererBouttons(categories) {
+export function genererBouttons(categories) {
     let categoriesAvecTous = [{ id: 0, name: "Tous" }];
     categoriesAvecTous.push(...categories);
     let balisePortfolio = document.querySelector(".filtres"); // élément parent pour l'ajout des boutons
@@ -81,7 +80,7 @@ function genererBouttons(categories) {
  * @param {Array} listeFiltresID Liste contenant les filtres actifs à appliquer lors de l'affichage
  * @returns La liste 'listeFiltresID' MAJ
  */
-function toggleButton(buttonId, listeFiltresID) {
+export function toggleButton(buttonId, listeFiltresID) {
     let balise = document.querySelector(`#${buttonId}`);
 
     // on met tout les autres boutons en mode off
@@ -138,7 +137,7 @@ function toggleButton(buttonId, listeFiltresID) {
  * @returns La liste des travaux à afficher en fonction des filtres
  */
 
-function filtrerTravaux(travaux, categories, listeFiltres, verbose = 0) {
+export function filtrerTravaux(travaux, categories, listeFiltres, verbose = 0) {
     // on crée la liste des catégorie id en fonction de la liste des filtres
     let listeIDs = [];
     for (let i = 0; i < categories.length; i++) {
@@ -150,9 +149,10 @@ function filtrerTravaux(travaux, categories, listeFiltres, verbose = 0) {
             listeIDs.push(currentCategorieId);
         }
     }
-    console.log(`
+    /* console.log(`
     liste des ids: ${listeIDs}
     `);
+    */
 
     //on parcours les travaux et on ajoute a la liste des travaux ceux qui sont de la bonnes cat
     let travauxFiltres = [];
@@ -162,33 +162,6 @@ function filtrerTravaux(travaux, categories, listeFiltres, verbose = 0) {
             travauxFiltres.push(element);
         }
     }
-    console.log(travauxFiltres);
+    // console.log(travauxFiltres);
     return travauxFiltres;
-}
-
-// ******** Fonctions en cours de dev ********
-
-// ******** Main ********
-// On récupère les travaux et les catégories
-let travauxEtCategories = await recupererTravauxEtCategories("http://localhost:5678/api/works", "http://localhost:5678/api/categories");
-let travaux = travauxEtCategories[0];
-let categories = travauxEtCategories[1];
-
-categories = genererBouttons(categories); // on génère les boutons avec les infos de la route /categories
-
-let baliseBoutons = document.querySelectorAll(".filtres button"); //Récupération des bouttons
-let listeFiltresID = [];
-let travauxFiltres = [...travaux];
-afficherTravaux(travauxFiltres); // on met tous les travaux pour le démarrage
-
-for (let i = 0; i < baliseBoutons.length; i++) {
-    const element = baliseBoutons[i];
-
-    element.addEventListener("click", (event) => {
-        //console.log(event.target.id); // on récupère le texte à l'intérieur
-        listeFiltresID = toggleButton(event.target.id, listeFiltresID);
-        let travauxFiltres = filtrerTravaux(travaux, categories, listeFiltresID, 1);
-        viderGallery();
-        afficherTravaux(travauxFiltres);
-    });
 }
