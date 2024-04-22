@@ -417,3 +417,44 @@ main {
     text-decoration: underline;
     margin-bottom: 100%;
 }
+
+/******** Modal ********/
+.modal-01 {
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-sizing: border-box;
+    background-color: rgba(255, 255, 255, 0.8);
+    border: solid 2px red;
+}
+
+.modal-wrapper {
+    display: flex;
+    justify-content: center;
+    width: 630px;
+    min-height: 600px;
+    max-height: 800px;
+    height: 700px;
+    padding: 60px;
+    box-sizing: border-box;
+    background-color: white;
+    border-radius: 10px;
+    border: solid 2px green;
+}
+
+.modal-title {
+    font-family: "Work Sans", sans-serif;
+    font-optical-sizing: auto;
+    font-weight: 400;
+    font-style: normal;
+
+    height: 30px;
+    justify-content: center;
+    border: solid 2px blue;
+}
