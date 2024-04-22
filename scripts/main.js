@@ -10,6 +10,8 @@ let boutonProjet = document.querySelector(".projets");
 let baliseProjet = document.querySelector("#affichage-projets");
 let baliseLogin = document.querySelector("#affichage-login");
 
+let baliseModifier = document.querySelector(".modifier");
+
 baliseLogin.style.display = "none"; // pour éviter la présence de login au chargement de la page initial
 
 /**
@@ -107,6 +109,7 @@ baliseFormulaire.addEventListener("submit", async (event) => {
             alert("connexion réussi - redirection vers la page d'accueil");
             redirectionAccueil();
             boutonLogin.innerText = "logout";
+            baliseModifier.style.display = "flex";
         }
     } catch (error) {
         console.log(error);
