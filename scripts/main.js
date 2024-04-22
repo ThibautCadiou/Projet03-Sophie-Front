@@ -12,29 +12,68 @@ let baliseLogin = document.querySelector("#affichage-login");
 
 baliseLogin.style.display = "none"; // pour éviter la présence de login au chargement de la page initial
 
+/**
+ * Affichage de la page de login au click suivant l'état connecté ou deconnecté
+ */
 function pageLogin() {
     boutonLogin.addEventListener("click", () => {
-        boutonLogin.style.fontWeight = "800";
-        boutonProjet.style.fontWeight = "400";
-        baliseLogin.style.display = "block";
-        baliseProjet.style.display = "none";
+        if (boutonLogin.innerText === "logout") {
+            // alert("Vous avez été déconnecté");
+            afficherPageAccueil();
+            boutonLogin.innerText = "login";
+            localStorage.removeItem(token);
+            console.log("fin de la deconnection");
+        } else {
+            afficherPageLogin();
+            console.log("affichage de la page login car on est deconnecté");
+        }
     });
 }
 
+/**
+ * Affichage de la page login
+ */
+function afficherPageLogin() {
+    boutonLogin.style.fontWeight = "800";
+    boutonProjet.style.fontWeight = "400";
+    baliseLogin.style.display = "block";
+    baliseProjet.style.display = "none";
+}
+
+/**
+ * Affihage de la page d'accueil sur click du bouton projet
+ */
 function pageAccueil() {
     boutonProjet.addEventListener("click", (event) => {
-        boutonLogin.style.fontWeight = "400";
-        boutonProjet.style.fontWeight = "800";
-
-        baliseLogin.style.display = "none";
-        baliseProjet.style.display = "block";
+        afficherPageAccueil();
     });
+}
+
+/**
+ * Affichage de la page d'accueil
+ */
+function afficherPageAccueil() {
+    boutonLogin.style.fontWeight = "400";
+    boutonProjet.style.fontWeight = "800";
+
+    baliseLogin.style.display = "none";
+    baliseProjet.style.display = "block";
+}
+/**
+ * Redirection vers la page d'accueil en, fnction de la validation ou  de l'invalidation a la connexion
+ */
+function redirectionAccueil() {
+    boutonLogin.style.fontWeight = "400";
+    boutonProjet.style.fontWeight = "800";
+
+    baliseLogin.style.display = "none";
+    baliseProjet.style.display = "block";
 }
 
 // partie champs
 let baliseFormulaire = document.querySelector("#formulaire");
 
-let connected = baliseFormulaire.addEventListener("submit", async (event) => {
+baliseFormulaire.addEventListener("submit", async (event) => {
     event.preventDefault();
     let connexionStatus = false;
 
@@ -55,14 +94,19 @@ let connected = baliseFormulaire.addEventListener("submit", async (event) => {
         };
 
         const reponse = await fetch(loginPath, objetLogin);
-        const token = await reponse.json();
+        const tokenResponse = await reponse.json();
+
+        console.log(tokenResponse.token);
+        window.localStorage.setItem("token", tokenResponse.token);
 
         if (reponse.status !== 200) {
             connexionStatus = false;
-            alert("Couple E-mail / Mot de passe invalid\nRedirection vers la page d'accueil");
+            alert("Couple E-mail / Mot de passe invalid");
         } else {
             connexionStatus = true;
-            alert("connexion réussi");
+            alert("connexion réussi - redirection vers la page d'accueil");
+            redirectionAccueil();
+            boutonLogin.innerText = "logout";
         }
     } catch (error) {
         console.log(error);
