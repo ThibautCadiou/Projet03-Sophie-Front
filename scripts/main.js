@@ -23,8 +23,9 @@ function pageLogin() {
             // alert("Vous avez été déconnecté");
             afficherPageAccueil();
             boutonLogin.innerText = "login";
-            localStorage.removeItem(token);
+            localStorage.removeItem("token");
             console.log("fin de la deconnection");
+            baliseModifier.style.display = "none";
         } else {
             afficherPageLogin();
             console.log("affichage de la page login car on est deconnecté");
