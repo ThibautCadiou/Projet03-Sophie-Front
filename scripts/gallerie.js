@@ -190,4 +190,6 @@ export async function genererProjets() {
             afficherTravaux(travauxFiltres);
         });
     }
+    // console.log(travaux);
+    return travaux;
 }

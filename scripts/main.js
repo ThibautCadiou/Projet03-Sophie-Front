@@ -1,7 +1,7 @@
 import { genererProjets } from "/scripts/gallerie.js";
 
 // ******** Main ********
-genererProjets(); // pour générer la page de base
+let travaux = await genererProjets(); // pour générer la page de base
 
 // ******** Login ********
 let boutonLogin = document.querySelector(".login");
@@ -123,3 +123,62 @@ pageAccueil();
 pageLogin();
 
 // partie champs
+const baliseModal = document.querySelector(".modal");
+const baliseOverlay = document.querySelector(".overlay");
+const baliseOpenButton = document.querySelector(".modal-button");
+const baliseCloseButton = document.querySelector(".close-modal");
+
+baliseOpenButton.addEventListener("click", (event) => {
+    console.log(event.srcElement.innerText);
+    baliseOverlay.classList.remove("hidden");
+    baliseModal.classList.remove("hidden");
+});
+
+const closeModal = (event) => {
+    baliseOverlay.classList.add("hidden");
+    baliseModal.classList.add("hidden");
+};
+
+baliseCloseButton.addEventListener("click", closeModal);
+baliseOverlay.addEventListener("click", closeModal);
+// Arrêter la propagation du clic à l'intérieur de la fenêtre modale
+baliseModal.addEventListener("click", (event) => {
+    event.stopPropagation(); // Empêche la propagation du clic aux éléments sous-jacents
+});
+
+//Génération des minitravaux
+function afficherMiniTravaux(listeTravaux) {
+    for (let i = 0; i < listeTravaux.length; i++) {
+        const element = listeTravaux[i];
+
+        let baliseIncrustationPhotos = document.querySelector(".modal-gallery");
+
+        let baliseParentMiniPhoto = document.createElement("div");
+        baliseParentMiniPhoto.classList.add("myCard");
+
+        let baliseImg = document.createElement("img");
+        baliseImg.classList.add("myImg");
+
+        baliseImg.src = element.imageUrl;
+
+        let baliseIcone = document.createElement("i");
+        baliseIcone.classList.add("fa-solid");
+        baliseIcone.classList.add("myIcone");
+        baliseIcone.classList.add("fa-trash-can");
+
+        baliseParentMiniPhoto.appendChild(baliseImg);
+        baliseParentMiniPhoto.appendChild(baliseIcone);
+
+        baliseIncrustationPhotos.appendChild(baliseParentMiniPhoto);
+    }
+}
+// afficherMiniTravaux([...travaux, ...travaux]);
+afficherMiniTravaux(travaux);
+
+//Partie escape au clavier
+document.addEventListener("keydown", (event) => {
+    if (event.key === "Escape" && !baliseModal.classList.contains("hidden")) {
+        console.log("escapeee !!!!!!!");
+        closeModal();
+    }
+});

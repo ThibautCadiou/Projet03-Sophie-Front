@@ -66,7 +66,7 @@ header {
     display: flex;
     justify-content: space-between;
     width: 100%;
-    padding: 50px 150px;
+    padding: 50px 0px;
     /* border: 2px solid red; */
 }
 
@@ -419,47 +419,70 @@ main {
 }
 
 /******** Modal ********/
-.modal-01 {
+.overlay {
+    display: flex;
     position: fixed;
-    left: 0;
     top: 0;
+    left: 0;
     width: 100%;
     height: 100%;
-
-    display: flex;
     justify-content: center;
     align-items: center;
     box-sizing: border-box;
     background-color: rgba(0, 0, 0, 0.3);
-    border: solid 2px red;
-    z-index: 1000;
+    z-index: 1;
+    /* border: 2px solid blue; */
 }
 
-.modal-wrapper {
+.modal {
     display: flex;
     flex-direction: column;
-    /* justify-content: center; */
+    position: relative;
+    justify-content: space-between;
     align-items: center;
     width: 630px;
-    min-height: 600px;
-    max-height: 800px;
     height: 700px;
-    padding: 60px;
+    min-height: 600px;
+    padding: 60px 60px 45px 60px;
+    box-sizing: border-box;
+    border-radius: 10px;
+    background-color: white;
+    /* border: 2px solid red; */
+}
+
+.hidden {
+    display: none;
+}
+/* Fin zone de test */
+
+.close-modal {
+    display: flex;
+    justify-content: center;
+
+    position: absolute;
+    right: 20px;
+    top: 35px;
+
+    width: 40px;
     box-sizing: border-box;
     background-color: white;
-    border-radius: 10px;
+    /* border: 2px solid red; */
+}
 
-    border: solid 2px green;
+.close-modal i {
+    display: block;
+    width: 24px;
+    height: 24px;
+    box-sizing: border-box;
+    /* border: 2px solid blue; */
 }
 
 .modal-title {
     font-family: "Work Sans", sans-serif;
     font-optical-sizing: auto;
-    font-weight: 400;
     font-style: normal;
-
-    height: 30px;
-    justify-content: center;
+    text-align: center;
+    font-weight: 400;
     margin-bottom: 38px;
     color: black;
     /* border: solid 2px blue; */
@@ -467,33 +490,62 @@ main {
 
 .modal-gallery {
     display: grid;
-    row-gap: 29px;
+    min-height: 380px;
+    max-height: 400px;
+    overflow-y: auto;
+
     grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
-    column-gap: 9px;
+    grid-column-gap: 9px;
+    grid-row-gap: 28px;
+}
+
+.myCard {
+    position: relative;
+    height: 100%;
+    width: 100%;
+    box-sizing: border-box;
+    /* border: 2px solid purple; */
+}
+
+.myImg {
+    width: 100%;
+    height: 104px;
+}
+
+.myIcone {
+    position: absolute;
+    text-align: center;
+    transform: scaleX(0.735) scaleY(0.7015);
+    padding: 3.35px 4px;
+    right: 3px;
+    top: 3px;
+    color: white;
+    background-color: black;
+    box-sizing: border-box;
+    border-radius: 2px;
 }
 
 .bar {
+    text-align: center;
     height: 1px;
     width: 420px;
-    justify-content: center;
-    text-align: center;
-    background-color: #b3b3b3;
     margin: 67px 0 38px 0;
+
+    background-color: #b3b3b3;
 }
 
 .modal-button {
     display: flex;
-    background-color: var(--main-color);
-    border-radius: 19px;
-    color: white;
-    height: 38px;
+    justify-content: center;
     align-items: center;
-    padding: 0 50px;
-    box-sizing: border-box;
+
+    height: 38px;
+    padding: 10px 50px;
+
+    color: white;
     font-weight: 700;
     font-size: 14px;
-}
-
-.hidden {
-    display: none;
+    border-radius: 19px;
+    background-color: var(--main-color);
+    box-sizing: border-box;
 }
