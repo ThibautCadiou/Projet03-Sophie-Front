@@ -121,3 +121,5 @@ baliseFormulaire.addEventListener("submit", async (event) => {
 
 pageAccueil();
 pageLogin();
+
+// partie champs

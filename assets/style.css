@@ -430,13 +430,16 @@ main {
     justify-content: center;
     align-items: center;
     box-sizing: border-box;
-    background-color: rgba(255, 255, 255, 0.8);
+    background-color: rgba(0, 0, 0, 0.3);
     border: solid 2px red;
+    z-index: 1000;
 }
 
 .modal-wrapper {
     display: flex;
-    justify-content: center;
+    flex-direction: column;
+    /* justify-content: center; */
+    align-items: center;
     width: 630px;
     min-height: 600px;
     max-height: 800px;
@@ -445,6 +448,7 @@ main {
     box-sizing: border-box;
     background-color: white;
     border-radius: 10px;
+
     border: solid 2px green;
 }
 
@@ -456,5 +460,40 @@ main {
 
     height: 30px;
     justify-content: center;
-    border: solid 2px blue;
+    margin-bottom: 38px;
+    color: black;
+    /* border: solid 2px blue; */
+}
+
+.modal-gallery {
+    display: grid;
+    row-gap: 29px;
+    grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+    column-gap: 9px;
+}
+
+.bar {
+    height: 1px;
+    width: 420px;
+    justify-content: center;
+    text-align: center;
+    background-color: #b3b3b3;
+    margin: 67px 0 38px 0;
+}
+
+.modal-button {
+    display: flex;
+    background-color: var(--main-color);
+    border-radius: 19px;
+    color: white;
+    height: 38px;
+    align-items: center;
+    padding: 0 50px;
+    box-sizing: border-box;
+    font-weight: 700;
+    font-size: 14px;
+}
+
+.hidden {
+    display: none;
 }
