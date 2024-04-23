@@ -549,3 +549,44 @@ main {
     background-color: var(--main-color);
     box-sizing: border-box;
 }
+
+/* Pour la modale 02 */
+.modale-02-title {
+    content: "test";
+}
+
+.modal-bottom {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.ajout-photo {
+    justify-content: center;
+    width: 237px;
+}
+
+.back-modal {
+    /* display: none; */
+    display: none;
+    justify-content: center;
+
+    position: absolute;
+    left: 20px;
+    top: 31px;
+
+    width: 40px;
+    box-sizing: border-box;
+    background-color: white;
+    /* border: 2px solid red; */
+}
+
+.back-modal i {
+    display: block;
+    width: 21px;
+    height: 21px;
+    transform: scaleX(1.714) scaleY(1.4);
+    box-sizing: border-box;
+    /* border: 2px solid blue; */
+}

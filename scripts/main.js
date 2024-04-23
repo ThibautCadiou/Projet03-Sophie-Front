@@ -122,29 +122,17 @@ baliseFormulaire.addEventListener("submit", async (event) => {
 pageAccueil();
 pageLogin();
 
-// partie champs
+/******** Partie Modale ********/
 const baliseModal = document.querySelector(".modal");
 const baliseOverlay = document.querySelector(".overlay");
 const baliseOpenButton = document.querySelector(".modal-button");
 const baliseCloseButton = document.querySelector(".close-modal");
 
-baliseOpenButton.addEventListener("click", (event) => {
-    console.log(event.srcElement.innerText);
-    baliseOverlay.classList.remove("hidden");
-    baliseModal.classList.remove("hidden");
-});
-
-const closeModal = (event) => {
-    baliseOverlay.classList.add("hidden");
-    baliseModal.classList.add("hidden");
-};
-
-baliseCloseButton.addEventListener("click", closeModal);
-baliseOverlay.addEventListener("click", closeModal);
-// Arrêter la propagation du clic à l'intérieur de la fenêtre modale
-baliseModal.addEventListener("click", (event) => {
-    event.stopPropagation(); // Empêche la propagation du clic aux éléments sous-jacents
-});
+//creation de la modale pour l'ajout de photo
+let baliseAjoutPhoto = document.querySelector(".ajout-photo");
+let baliseModalTitle = document.querySelector(".modal-title");
+let baliseGallery = document.querySelector(".modal-gallery");
+let baliseBackArrow = document.querySelector(".back-modal");
 
 //Génération des minitravaux
 function afficherMiniTravaux(listeTravaux) {
@@ -172,13 +160,63 @@ function afficherMiniTravaux(listeTravaux) {
         baliseIncrustationPhotos.appendChild(baliseParentMiniPhoto);
     }
 }
-// afficherMiniTravaux([...travaux, ...travaux]);
-afficherMiniTravaux(travaux);
+
+function setModalToAddPicture() {
+    console.log("Ajout de photo initié");
+    baliseModalTitle.textContent = "Ajout photo";
+    baliseGallery.style.display = "none";
+    baliseAjoutPhoto.textContent = "Valider";
+    baliseBackArrow.style.display = "flex";
+}
+
+function setModalToNormal() {
+    baliseModalTitle.textContent = "Gallerie photo";
+    baliseGallery.style.display = "grid";
+    baliseAjoutPhoto.textContent = "Ajouter une photo";
+    baliseBackArrow.style.display = "none";
+}
+
+baliseOpenButton.addEventListener("click", (event) => {
+    console.log(event.srcElement.innerText);
+    baliseOverlay.classList.remove("hidden");
+    baliseModal.classList.remove("hidden");
+});
+
+const closeModal = (event) => {
+    baliseOverlay.classList.add("hidden");
+    baliseModal.classList.add("hidden");
+};
+
+baliseCloseButton.addEventListener("click", () => {
+    closeModal();
+    setModalToNormal();
+});
+
+baliseOverlay.addEventListener("click", () => {
+    closeModal();
+    setModalToNormal();
+});
+// Arrêter la propagation du clic à l'intérieur de la fenêtre modale
+baliseModal.addEventListener("click", (event) => {
+    event.stopPropagation(); // Empêche la propagation du clic aux éléments sous-jacents
+});
 
 //Partie escape au clavier
 document.addEventListener("keydown", (event) => {
     if (event.key === "Escape" && !baliseModal.classList.contains("hidden")) {
-        console.log("escapeee !!!!!!!");
+        setModalToNormal();
         closeModal();
     }
 });
+
+baliseAjoutPhoto.addEventListener("click", (event) => {
+    setModalToAddPicture();
+});
+
+baliseBackArrow.addEventListener("click", (event) => {
+    console.log("retour en arrière");
+    setModalToNormal();
+});
+
+// Main de la partie modale
+afficherMiniTravaux(travaux);
