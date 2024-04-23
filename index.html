@@ -56,8 +56,37 @@
                             <i class="fa-solid fa-arrow-left"></i>
                         </button>
                         <h1 class="modal-title">Galerie photo</h1>
+
+                        <!-- Pour la modale 01 -->
                         <div class="modal-gallery"></div>
 
+                        <!-- Pour la modale 02 -->
+                        <div class="modal-add-photo">
+                            <div class="photo">
+                                <i class="fa-regular fa-image"></i>
+                                <button class="add-on-click">+ Ajouter photo</button>
+                                <form action="" class="choisir-fichier">
+                                    <input type="file" id="choisir-fichier" name="choisir-fichier" accept="image/png, image/jpeg" />
+                                </form>
+                                <p class="subtitle">jpg, png : 4mo max</p>
+                            </div>
+
+                            <div class="form-modal02">
+                                <form action="post" class="form-add-photo">
+                                    <label class="form-title" for="titre">Titre</label>
+                                    <input type="text" id="titre" name="titre" class="form-box" />
+                                    <label class="form-title" for="categorie">Catégorie</label>
+                                    <select id="categorie" name="categorie" class="form-box">
+                                        <option value="possibilite01">Possibilité 01</option>
+                                        <option value="possibilite02">Possibilité 02</option>
+                                        <option value="possibilite03">Possibilité 03</option>
+                                    </select>
+                                    <i class="fa-solid fa-chevron-down"></i>
+                                </form>
+                            </div>
+                        </div>
+
+                        <!-- Pour le bottom des deux modale -->
                         <div class="modal-bottom">
                             <div class="bar"></div>
                             <button class="ajout-photo modal-button">Ajouter Photo</button>

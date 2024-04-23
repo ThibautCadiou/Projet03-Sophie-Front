@@ -6,13 +6,23 @@ let travaux = await genererProjets(); // pour générer la page de base
 // ******** Login ********
 let boutonLogin = document.querySelector(".login");
 let boutonProjet = document.querySelector(".projets");
-
 let baliseProjet = document.querySelector("#affichage-projets");
 let baliseLogin = document.querySelector("#affichage-login");
-
 let baliseModifier = document.querySelector(".modifier");
 
-baliseLogin.style.display = "none"; // pour éviter la présence de login au chargement de la page initial
+// partie champs
+let baliseFormulaire = document.querySelector("#formulaire");
+/******** Partie Modale ********/
+const baliseModal = document.querySelector(".modal");
+const baliseOverlay = document.querySelector(".overlay");
+const baliseOpenButton = document.querySelector(".modal-button");
+const baliseCloseButton = document.querySelector(".close-modal");
+
+// creation de la modale pour l'ajout de photo
+let baliseAjoutPhoto = document.querySelector(".ajout-photo");
+let baliseModalTitle = document.querySelector(".modal-title");
+let baliseGallery = document.querySelector(".modal-gallery");
+let baliseBackArrow = document.querySelector(".back-modal");
 
 /**
  * Affichage de la page de login au click suivant l'état connecté ou deconnecté
@@ -73,9 +83,6 @@ function redirectionAccueil() {
     baliseProjet.style.display = "block";
 }
 
-// partie champs
-let baliseFormulaire = document.querySelector("#formulaire");
-
 baliseFormulaire.addEventListener("submit", async (event) => {
     event.preventDefault();
     let connexionStatus = false;
@@ -119,34 +126,19 @@ baliseFormulaire.addEventListener("submit", async (event) => {
     return connexionStatus;
 });
 
-pageAccueil();
-pageLogin();
-
-/******** Partie Modale ********/
-const baliseModal = document.querySelector(".modal");
-const baliseOverlay = document.querySelector(".overlay");
-const baliseOpenButton = document.querySelector(".modal-button");
-const baliseCloseButton = document.querySelector(".close-modal");
-
-//creation de la modale pour l'ajout de photo
-let baliseAjoutPhoto = document.querySelector(".ajout-photo");
-let baliseModalTitle = document.querySelector(".modal-title");
-let baliseGallery = document.querySelector(".modal-gallery");
-let baliseBackArrow = document.querySelector(".back-modal");
-
-//Génération des minitravaux
+/**
+ * Fonction qui gère la génération des travaux dans la modale 01
+ * @param {Array.<object>} listeTravaux
+ */
 function afficherMiniTravaux(listeTravaux) {
     for (let i = 0; i < listeTravaux.length; i++) {
         const element = listeTravaux[i];
-
         let baliseIncrustationPhotos = document.querySelector(".modal-gallery");
-
         let baliseParentMiniPhoto = document.createElement("div");
         baliseParentMiniPhoto.classList.add("myCard");
 
         let baliseImg = document.createElement("img");
         baliseImg.classList.add("myImg");
-
         baliseImg.src = element.imageUrl;
 
         let baliseIcone = document.createElement("i");
@@ -161,19 +153,29 @@ function afficherMiniTravaux(listeTravaux) {
     }
 }
 
+let balisemodalAddPhoto = document.querySelector(".modal-add-photo");
+
+/**
+ * Fonction qui gère l'affichage de la modale en mode 2
+ */
 function setModalToAddPicture() {
     console.log("Ajout de photo initié");
     baliseModalTitle.textContent = "Ajout photo";
     baliseGallery.style.display = "none";
     baliseAjoutPhoto.textContent = "Valider";
     baliseBackArrow.style.display = "flex";
+    balisemodalAddPhoto.style.display = "flex";
 }
 
+/**
+ * Fonction qui gère l'affichage de la modela en mode 1
+ */
 function setModalToNormal() {
     baliseModalTitle.textContent = "Gallerie photo";
     baliseGallery.style.display = "grid";
     baliseAjoutPhoto.textContent = "Ajouter une photo";
     baliseBackArrow.style.display = "none";
+    balisemodalAddPhoto.style.display = "none";
 }
 
 baliseOpenButton.addEventListener("click", (event) => {
@@ -219,4 +221,14 @@ baliseBackArrow.addEventListener("click", (event) => {
 });
 
 // Main de la partie modale
+baliseLogin.style.display = "none"; // pour éviter la présence de login au chargement de la page initial
+pageAccueil();
+pageLogin();
 afficherMiniTravaux(travaux);
+
+// Pour ajouter un travail, nottament la photo
+let baliseAjouterPhoto = document.querySelector(".add-on-click");
+let baliseChoisirFichier = document.querySelector(".choisir-fichier");
+baliseAjouterPhoto.addEventListener("click", () => {
+    console.log("on va ajouter une photo");
+});
