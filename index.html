@@ -45,6 +45,7 @@
                     </article>
                 </section>
 
+                <!-- Pour du debug sans avoira faire la connexion -->
                 <button class="show-modal modal-button">Bouton ouverture modale</button>
 
                 <div class="overlay hidden">
@@ -79,7 +80,7 @@
                             <div class="form-modal02">
                                 <form action="post" class="form-add-photo">
                                     <label class="form-title" for="titre">Titre</label>
-                                    <input type="text" id="titre" name="titre" class="form-box" />
+                                    <input type="text" id="titre" name="titre" class="form-box" autocomplete="given-title" />
                                     <label class="form-title" for="categorie">Catégorie</label>
                                     <select id="categorie" name="categorie" class="form-box">
                                         <option value="possibilite01">Objets</option>
@@ -115,9 +116,9 @@
                     <p>Vous avez un projet ? Discutons-en !</p>
                     <form action="#" method="post">
                         <label for="name">Nom</label>
-                        <input type="text" name="name" id="name" />
+                        <input type="text" name="name" id="name" autocomplete="given-name" />
                         <label for="email">E-mail</label>
-                        <input type="email" name="email" id="email" />
+                        <input type="email" name="email" id="email" autocomplete="given-email" />
                         <label for="message">Message</label>
                         <textarea name="message" id="message" cols="30" rows="10"></textarea>
                         <input type="submit" value="Envoyer" id="inputID" />

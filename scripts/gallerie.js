@@ -149,10 +149,6 @@ export function filtrerTravaux(travaux, categories, listeFiltres, verbose = 0) {
             listeIDs.push(currentCategorieId);
         }
     }
-    /* console.log(`
-    liste des ids: ${listeIDs}
-    `);
-    */
 
     //on parcours les travaux et on ajoute a la liste des travaux ceux qui sont de la bonnes cat
     let travauxFiltres = [];
@@ -162,7 +158,6 @@ export function filtrerTravaux(travaux, categories, listeFiltres, verbose = 0) {
             travauxFiltres.push(element);
         }
     }
-    // console.log(travauxFiltres);
     return travauxFiltres;
 }
 
@@ -183,13 +178,11 @@ export async function genererProjets() {
         const element = baliseBoutons[i];
 
         element.addEventListener("click", (event) => {
-            //console.log(event.target.id); // on récupère le texte à l'intérieur
             listeFiltresID = toggleButton(event.target.id, listeFiltresID);
             let travauxFiltres = filtrerTravaux(travaux, categories, listeFiltresID, 1);
             viderGallery();
             afficherTravaux(travauxFiltres);
         });
     }
-    // console.log(travaux);
     return travaux;
 }
