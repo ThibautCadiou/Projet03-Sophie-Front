@@ -63,12 +63,17 @@
                         <!-- Pour la modale 02 -->
                         <div class="modal-add-photo">
                             <div class="photo">
-                                <i class="fa-regular fa-image"></i>
-                                <button class="add-on-click">+ Ajouter photo</button>
-                                <form action="" class="choisir-fichier">
-                                    <input type="file" id="choisir-fichier" name="choisir-fichier" accept="image/png, image/jpeg" />
-                                </form>
-                                <p class="subtitle">jpg, png : 4mo max</p>
+                                <img src="" alt="" class="image-to-add" />
+                                <div class="mode-without-src">
+                                    <i class="fa-regular fa-image"></i>
+                                    <button class="add-on-click">+ Ajouter photo</button>
+                                    <div class="choisir-fichier">
+                                        <form action="get">
+                                            <input type="file" id="choisir-fichier" name="choisir-fichier" accept="image/png, image/jpeg" />
+                                        </form>
+                                    </div>
+                                    <p class="subtitle">jpg, png : 4mo max</p>
+                                </div>
                             </div>
 
                             <div class="form-modal02">
@@ -77,9 +82,9 @@
                                     <input type="text" id="titre" name="titre" class="form-box" />
                                     <label class="form-title" for="categorie">Catégorie</label>
                                     <select id="categorie" name="categorie" class="form-box">
-                                        <option value="possibilite01">Possibilité 01</option>
-                                        <option value="possibilite02">Possibilité 02</option>
-                                        <option value="possibilite03">Possibilité 03</option>
+                                        <option value="possibilite01">Objets</option>
+                                        <option value="possibilite02">Appartements</option>
+                                        <option value="possibilite03">Hotels & restaurants</option>
                                     </select>
                                     <i class="fa-solid fa-chevron-down"></i>
                                 </form>

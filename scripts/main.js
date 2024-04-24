@@ -176,6 +176,8 @@ function setModalToNormal() {
     baliseAjoutPhoto.textContent = "Ajouter une photo";
     baliseBackArrow.style.display = "none";
     balisemodalAddPhoto.style.display = "none";
+    baliseImgageFichierAAjouter.src = null;
+    baliseRechercheInfosImage.style.display = "flex";
 }
 
 baliseOpenButton.addEventListener("click", (event) => {
@@ -211,9 +213,17 @@ document.addEventListener("keydown", (event) => {
     }
 });
 
-baliseAjoutPhoto.addEventListener("click", (event) => {
-    setModalToAddPicture();
-});
+function correspondanceCategorieEtId(categorieName) {
+    if (categorieName === "possibilite01") {
+        return "1";
+    } else if (categorieName === "possibilite02") {
+        return "2";
+    } else if (categorieName === "possibilite03") {
+        return "3";
+    } else {
+        console.log("error 404 ... désolé");
+    }
+}
 
 baliseBackArrow.addEventListener("click", (event) => {
     console.log("retour en arrière");
@@ -226,9 +236,60 @@ pageAccueil();
 pageLogin();
 afficherMiniTravaux(travaux);
 
-// Pour ajouter un travail, nottament la photo
+// Pour ajouter un travail, notamment la photo
 let baliseAjouterPhoto = document.querySelector(".add-on-click");
-let baliseChoisirFichier = document.querySelector(".choisir-fichier");
-baliseAjouterPhoto.addEventListener("click", () => {
+let baliseChoisirFichier = document.querySelector("#choisir-fichier");
+let baliseImgageFichierAAjouter = document.querySelector(".image-to-add");
+let baliseRechercheInfosImage = document.querySelector(".mode-without-src");
+
+let cheminFichierPourEnvoi = baliseAjouterPhoto.addEventListener("click", () => {
     console.log("on va ajouter une photo");
+
+    let myPath = baliseChoisirFichier.addEventListener("change", (event) => {
+        const fichiers = event.target.files;
+        const cheminFichier = URL.createObjectURL(fichiers[0]);
+        console.log(fichiers[0]);
+        baliseImgageFichierAAjouter.src = cheminFichier;
+        baliseRechercheInfosImage.style.display = "none";
+        return cheminFichier;
+    });
+
+    let cheminFichier = baliseChoisirFichier.click();
+    return cheminFichier;
+});
+
+baliseAjoutPhoto.addEventListener("click", (event) => {
+    let innerTextValue = baliseAjoutPhoto.textContent;
+
+    if (innerTextValue === "Valider") {
+        //Liste des infos a récupérer pour envoyer le travail
+        let baliseInputPath = document.querySelector("#choisir-fichier");
+        console.log(baliseInputPath.value);
+
+        let baliseInputName = document.querySelector("#titre");
+        console.log(baliseInputName.value);
+
+        let baliseInputCategorie = document.querySelector("#categorie");
+        console.log(baliseInputCategorie.value);
+
+        let categorieId = correspondanceCategorieEtId(baliseInputCategorie.value);
+
+        // on trouve la ccorepsondance entre la catégorie et l'id de la categorie
+
+        //Envoie des travaux
+        console.log("On envoie les travaux");
+        let newWork = {
+            id: travaux.length,
+            title: baliseInputName.value,
+            imageUrl: cheminFichierPourEnvoi,
+            categoryId: categorieId,
+            userId: 1,
+        };
+        console.log(newWork);
+        let chargeUtile = JSON.stringify(newWork);
+        fetch("http://localhost:5678/api/works", { method: "POST", headers: { "Content-Type": "application/json" }, body: chargeUtile });
+    } else {
+        console.log("On se met en mode ajout de travaux");
+        setModalToAddPicture();
+    }
 });
