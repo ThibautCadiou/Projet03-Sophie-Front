@@ -1,19 +1,18 @@
 import { genererProjets } from "/scripts/gallerie.js";
-import { pageLogin, afficherPageLogin, pageAccueil, afficherPageAccueil, redirectionAccueil } from "/scripts/login.js";
+import { pageLogin, pageAccueil, afficherPageAccueil, redirectionAccueil } from "/scripts/login.js";
 import { afficherMiniTravaux, setModalToAddPicture, setModalToNormal } from "/scripts/modal.js";
 
 // ******** Main ********
 let travaux = await genererProjets(); // pour générer la page de base
-let boutonLogin = document.querySelector(".login");
-
 let token = "";
 
-/** Conncexion */
+// ******* Les Events Listeners
+// Pour la partie Login
 let baliseFormulaire = document.querySelector("#formulaire");
+
 baliseFormulaire.addEventListener("submit", async (event) => {
     event.preventDefault();
     let connexionStatus = false;
-
     let baliseMail = document.querySelector("#login-email");
     let balisePassword = document.querySelector("#password");
     let mailValue = baliseMail.value;
@@ -43,6 +42,7 @@ baliseFormulaire.addEventListener("submit", async (event) => {
             connexionStatus = true;
             alert("connexion réussi - redirection vers la page d'accueil");
             redirectionAccueil();
+            let boutonLogin = document.querySelector(".login");
             boutonLogin.innerText = "logout";
             baliseModifier.style.display = "flex";
         }
@@ -63,7 +63,6 @@ let baliseAjouterPhoto = document.querySelector(".add-on-click");
 let baliseImgageFichierAAjouter = document.querySelector(".image-to-add");
 let baliseRechercheInfosImage = document.querySelector(".mode-without-src");
 let cheminFichier = "";
-
 baliseAjouterPhoto.addEventListener("click", () => {
     let baliseChoisirFichier = document.querySelector("#choisir-fichier");
 

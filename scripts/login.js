@@ -4,6 +4,7 @@ let boutonProjet = document.querySelector(".projets");
 let baliseProjet = document.querySelector("#affichage-projets");
 let baliseLogin = document.querySelector("#affichage-login");
 let baliseModifier = document.querySelector(".modifier");
+
 /**
  * Affichage de la page de login au click suivant l'état connecté ou deconnecté
  */
@@ -49,6 +50,7 @@ export function afficherPageAccueil() {
     baliseLogin.style.display = "none";
     baliseProjet.style.display = "block";
 }
+
 /**
  * Redirection vers la page d'accueil en, fnction de la validation ou  de l'invalidation a la connexion
  */
