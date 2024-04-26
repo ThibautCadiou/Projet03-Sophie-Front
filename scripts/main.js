@@ -1,54 +1,20 @@
 import { genererProjets } from "/scripts/gallerie.js";
-import { pageLogin, pageAccueil, afficherPageAccueil, redirectionAccueil } from "/scripts/login.js";
-import { afficherMiniTravaux, setModalToAddPicture, setModalToNormal } from "/scripts/modal.js";
+import { pageLogin, pageAccueil, testerConnexion } from "/scripts/login.js";
+import { afficherMiniTravaux, setModalToAddPicture } from "/scripts/modal.js";
 
 // ******** Main ********
 let travaux = await genererProjets(); // pour générer la page de base
-let token = "";
 
-// ******* Les Events Listeners
-// Pour la partie Login
+// ******* Les Events Listeners ******* //
+
+/**
+ *  Pour la partie Login
+ * On réagi à l'appui sur le bouton "Se connecter"
+ */
 let baliseFormulaire = document.querySelector("#formulaire");
-
-baliseFormulaire.addEventListener("submit", async (event) => {
-    event.preventDefault();
-    let connexionStatus = false;
-    let baliseMail = document.querySelector("#login-email");
-    let balisePassword = document.querySelector("#password");
-    let mailValue = baliseMail.value;
-    let passwordValue = balisePassword.value;
-
-    try {
-        const loginPath = "http://localhost:5678/api/users/login";
-        const objetLogin = {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({
-                email: mailValue,
-                password: passwordValue,
-            }),
-        };
-
-        const reponse = await fetch(loginPath, objetLogin);
-        const tokenResponse = await reponse.json();
-        token = tokenResponse.token;
-
-        window.localStorage.setItem("token", tokenResponse.token);
-
-        if (reponse.status !== 200) {
-            connexionStatus = false;
-            alert("Couple E-mail / Mot de passe invalid");
-        } else {
-            connexionStatus = true;
-            alert("connexion réussi - redirection vers la page d'accueil");
-            redirectionAccueil();
-            let boutonLogin = document.querySelector(".login");
-            boutonLogin.innerText = "logout";
-            baliseModifier.style.display = "flex";
-        }
-    } catch (error) {
-        console.log(error);
-    }
+let token = "";
+baliseFormulaire.addEventListener("submit", async function (event) {
+    token = await testerConnexion(event);
 });
 
 // Main de la partie modale
