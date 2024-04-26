@@ -32,6 +32,9 @@ export function pageLogin() {
             localStorage.removeItem("token");
             localStorage.removeItem("userId");
             baliseModifier.style.display = "none";
+            let baliseFiltres = document.querySelector(".filtres");
+            baliseFiltres.classList.remove("cacher-les-boutons");
+            baliseFiltres.classList.add("afficher-les-boutons");
         } else {
             afficherPageLogin();
         }
@@ -63,15 +66,15 @@ export function initLogin() {
  */
 export async function testerConnexion(event) {
     event.preventDefault();
-    let connexionStatus = false;
     let baliseMail = document.querySelector("#login-email");
-    let mailValue = baliseMail.value;
+    let mailValue = baliseMail.value; // on récupère la valeur du formulaire contenant le mail
     let balisePassword = document.querySelector("#password");
-    let passwordValue = balisePassword.value;
+    let passwordValue = balisePassword.value; // on récupèree la valeur dans le formulaire cotnenant le mdp
 
     try {
-        const loginPath = "http://localhost:5678/api/users/login";
+        const loginPath = "http://localhost:5678/api/users/login"; // route pour tester le couple id/mdp
         const objetLogin = {
+            // objet a envoyer lors de la requete
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
@@ -87,16 +90,16 @@ export async function testerConnexion(event) {
         window.localStorage.setItem("userId", await responseDeserialized.userId);
 
         if (reponse.status !== 200) {
-            connexionStatus = false;
             alert("Couple E-mail / Mot de passe invalid");
         } else {
-            connexionStatus = true;
             alert("connexion réussi - redirection vers la page d'accueil");
             afficherPageAccueil();
             let boutonLogin = document.querySelector(".login");
             boutonLogin.innerText = "logout";
             let baliseModifier = document.querySelector(".modifier");
             baliseModifier.style.display = "flex";
+            let baliseFiltres = document.querySelector(".filtres");
+            baliseFiltres.classList.add("cacher-les-boutons");
         }
     } catch (error) {
         console.log(error);

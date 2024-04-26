@@ -705,3 +705,13 @@ form label[for="categorie"] {
     height: 169px;
     box-sizing: border-box;
 }
+
+.cacher-les-boutons {
+    opacity: 0.5;
+    pointer-events: none;
+}
+
+.afficher-les-boutons {
+    opacity: 1;
+    pointer-events: auto;
+}
