@@ -1,7 +1,5 @@
-// ******** Fonctions Fonctionnelles ********
 /**
- * Fonction 01 de la partie gallerie
- * Récupérer la liste des travaux et des catégories depuis l'API grace aux routes indiquées
+ * Fonction 01 de la partie gallerie : Récupérer la liste des travaux et des catégories depuis l'API grace aux routes indiquées
  * @param {string} worksPath Le chemin ou l'url de l'api donnant la liste des travaux
  * @param {string} catPath Le chemin ou l'url de l'API donnant la lits edes catégories
  * @returns {Array} une liste dont le premier élément est la liste des travaux et le second la liste des catégories
@@ -10,6 +8,7 @@ export async function recupererTravauxEtCategories(worksPath, catPath) {
     // Récupération des travaux
     const reponseWorks = await fetch(worksPath);
     const travaux = await reponseWorks.json();
+
     // Récupération des catégories
     const reponseCategories = await fetch(catPath);
     const categories = await reponseCategories.json();
@@ -121,24 +120,15 @@ export function viderGallery() {
  * @returns La liste des travaux à afficher en fonction des filtres
  */
 export function filtrerTravaux(travaux, categories, filtreActif, verbose = 0) {
-    // on crée la liste des catégorie id en fonction de la liste des filtres
-    let filtreActifId = 0;
+    //on récupère l'id de la catégorie envoyer
+    let filtreActifId = categories.filter(function (cat) {
+        return cat.name === filtreActif;
+    });
+    const categoryId = filtreActifId[0].id;
 
-    for (let i = 0; i < categories.length; i++) {
-        const categorie = categories[i];
-        if (filtreActif === categorie.name) {
-            filtreActifId = categorie.id;
-        }
-    }
-
-    //on parcours les travaux et on ajoute a la liste des travaux ceux qui sont de la bonnes cat
-    let travauxFiltres = [];
-    for (let i = 0; i < travaux.length; i++) {
-        const element = travaux[i];
-        if (element.categoryId === filtreActifId) {
-            travauxFiltres.push(element);
-        }
-    }
+    let travauxFiltres = travaux.filter(function (travail) {
+        return travail.categoryId === categoryId;
+    });
     return travauxFiltres;
 }
 
