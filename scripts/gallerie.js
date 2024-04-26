@@ -122,16 +122,12 @@ export function viderGallery() {
  */
 export function filtrerTravaux(travaux, categories, filtreActif, verbose = 0) {
     // on crée la liste des catégorie id en fonction de la liste des filtres
-    let listeIDs = [];
-    console.log(filtreActif);
+    let filtreActifId = 0;
+
     for (let i = 0; i < categories.length; i++) {
         const categorie = categories[i];
-
-        let currentCategorieName = categorie.name;
-        let currentCategorieId = categorie.id;
-
-        if (filtreActif.includes(currentCategorieName)) {
-            listeIDs.push(currentCategorieId);
+        if (filtreActif === categorie.name) {
+            filtreActifId = categorie.id;
         }
     }
 
@@ -139,8 +135,7 @@ export function filtrerTravaux(travaux, categories, filtreActif, verbose = 0) {
     let travauxFiltres = [];
     for (let i = 0; i < travaux.length; i++) {
         const element = travaux[i];
-        console.log(element);
-        if (listeIDs.includes(element.categoryId)) {
+        if (element.categoryId === filtreActifId) {
             travauxFiltres.push(element);
         }
     }
