@@ -707,7 +707,7 @@ form label[for="categorie"] {
 }
 
 .cacher-les-boutons {
-    opacity: 0.5;
+    opacity: 0;
     pointer-events: none;
 }
 
