@@ -1,12 +1,28 @@
-// ******** Login ********
-let boutonLogin = document.querySelector(".login");
+/**
+ * Fonction 110 : Affichage de la page d'accueil sur click du bouton projet
+ */
 let boutonProjet = document.querySelector(".projets");
-let baliseProjet = document.querySelector("#affichage-projets");
-let baliseLogin = document.querySelector("#affichage-login");
+export function pageAccueil() {
+    boutonProjet.addEventListener("click", (event) => {
+        afficherPageAccueil();
+    });
+}
 
 /**
- * Affichage de la page de login au click suivant l'état connecté ou deconnecté
+ * Fonction 111 : Affichage de la page d'accueil
  */
+let baliseProjet = document.querySelector("#affichage-projets");
+let baliseLogin = document.querySelector("#affichage-login");
+export function afficherPageAccueil() {
+    boutonLogin.style.fontWeight = "400";
+    baliseLogin.style.display = "none";
+    baliseProjet.style.display = "block";
+}
+
+/**
+ * Fonction 120 : Affichage de la page de login au click suivant l'état connecté ou deconnecté
+ */
+let boutonLogin = document.querySelector(".login");
 export function pageLogin() {
     boutonLogin.addEventListener("click", () => {
         if (boutonLogin.innerText === "logout") {
@@ -21,49 +37,18 @@ export function pageLogin() {
 }
 
 /**
- * Affichage de la page login
+ * Fonction 121 :Affichage de la page login
  */
 export function afficherPageLogin() {
     boutonLogin.style.fontWeight = "800";
-    boutonProjet.style.fontWeight = "400";
     baliseLogin.style.display = "block";
     baliseProjet.style.display = "none";
 }
 
 /**
- * Affihage de la page d'accueil sur click du bouton projet
- */
-export function pageAccueil() {
-    boutonProjet.addEventListener("click", (event) => {
-        afficherPageAccueil();
-    });
-}
-
-/**
- * Affichage de la page d'accueil
- */
-export function afficherPageAccueil() {
-    boutonLogin.style.fontWeight = "400";
-    boutonProjet.style.fontWeight = "800";
-
-    baliseLogin.style.display = "none";
-    baliseProjet.style.display = "block";
-}
-
-/**
- * Redirection vers la page d'accueil en, fnction de la validation ou  de l'invalidation a la connexion
- */
-export function redirectionAccueil() {
-    boutonLogin.style.fontWeight = "400";
-    boutonProjet.style.fontWeight = "800";
-
-    baliseLogin.style.display = "none";
-    baliseProjet.style.display = "block";
-}
-
-/**
- * Fonction pour tester le couple identiofiant mot de passe
+ * Fonction main de la partie login:  pour tester le couple identiofiant mot de passe
  * @param {*} event
+ * @return Le token
  */
 export async function testerConnexion(event) {
     event.preventDefault();
@@ -97,7 +82,7 @@ export async function testerConnexion(event) {
         } else {
             connexionStatus = true;
             alert("connexion réussi - redirection vers la page d'accueil");
-            redirectionAccueil();
+            afficherPageAccueil();
             let boutonLogin = document.querySelector(".login");
             boutonLogin.innerText = "logout";
             let baliseModifier = document.querySelector(".modifier");

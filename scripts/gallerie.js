@@ -1,5 +1,5 @@
 /**
- * Fonction 01 de la partie gallerie : Récupérer la liste des travaux et des catégories depuis l'API grace aux routes indiquées
+ * Fonction 010 de la partie gallerie : Récupérer la liste des travaux et des catégories depuis l'API grace aux routes indiquées
  * @param {string} worksPath Le chemin ou l'url de l'api donnant la liste des travaux
  * @param {string} catPath Le chemin ou l'url de l'API donnant la lits edes catégories
  * @returns {Array} une liste dont le premier élément est la liste des travaux et le second la liste des catégories
@@ -16,7 +16,7 @@ export async function recupererTravauxEtCategories(worksPath, catPath) {
 }
 
 /**
- * Fonction 02 de la partie gallerie: Fonction qui génère les boutons de filtrage des projets
+ * Fonction 020 de la partie gallerie: Fonction qui génère les boutons de filtrage des projets
  * @param {Array} categories Liste des catégories (sans TOUS) avec leurs identifiants et leurs nom
  * @returns Une liste d'objet {id: <string>, name: <string>}comportant les catégories avec Tous ajoutés
  */
@@ -43,7 +43,7 @@ export function genererBouttons(categories) {
 }
 
 /**
- * Fonction 03 de la partie gallerie: Permet d'afficher la liste de travaux envoyés en paramètre
+ * Fonction 030 de la partie gallerie: Permet d'afficher la liste de travaux envoyés en paramètre
  * @param {Array} myList La liste des travaux à afficher
  */
 export function afficherTravaux(myList) {
@@ -80,7 +80,7 @@ function turnOffAllButtons(baliseAllButtons) {
 }
 
 /**
- * Fonction 04 de la partie gallerie: permet de mettre a jour les onglets de filtrage ainsi qu'une liste des catégorie à afficher
+ * Fonction 040 de la partie gallerie: permet de mettre a jour les onglets de filtrage ainsi qu'une liste des catégorie à afficher
  * @param {string} buttonId Id du bouton sur lequel le click a été fait
  * @param {Array} filtreActif Liste contenant les filtres actifs à appliquer lors de l'affichage
  * @returns Le <string> avec le texte invlu dans le bouton
@@ -104,7 +104,7 @@ export function toggleButton(buttonId, filtreActif) {
 }
 
 /**
- * Fonctions 05 : On vide la gallery pour l'affichage des travaux filtré
+ * Fonctions 050 : On vide la gallery pour l'affichage des travaux filtré
  */
 export function viderGallery() {
     let baliseGallery = document.querySelector(".gallery");
@@ -112,7 +112,7 @@ export function viderGallery() {
 }
 
 /**
- * Fonction 06 : filtrage des travaux
+ * Fonction 060 : filtrage des travaux
  * @param {Array.<string>} travaux liste des travaux
  * @param {Array} categories liste des catégories récupérées depuis l'API
  * @param {Array} filtreActif liste de string avec le nom des filtres appliqués

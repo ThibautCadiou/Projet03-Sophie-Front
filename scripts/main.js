@@ -8,21 +8,20 @@ let travaux = await genererProjets(); // pour générer la page de base
 // ******* Les Events Listeners ******* //
 
 /**
- *  Pour la partie Login
+ * Pour la partie Login
  * On réagi à l'appui sur le bouton "Se connecter"
  */
-let baliseFormulaire = document.querySelector("#formulaire");
-let token = "";
-baliseFormulaire.addEventListener("submit", async function (event) {
-    token = await testerConnexion(event);
-});
-
-// Main de la partie modale
 let baliseLogin = document.querySelector("#affichage-login");
 baliseLogin.style.display = "none"; // pour éviter la présence de login au chargement de la page initial
 pageAccueil();
 pageLogin();
 afficherMiniTravaux(travaux);
+
+let baliseFormulaire = document.querySelector("#formulaire");
+let token = "";
+baliseFormulaire.addEventListener("submit", async function (event) {
+    token = await testerConnexion(event);
+});
 
 // Pour ajouter un travail, notamment la photo
 let baliseAjouterPhoto = document.querySelector(".add-on-click");
