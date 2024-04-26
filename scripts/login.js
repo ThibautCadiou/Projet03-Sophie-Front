@@ -23,12 +23,14 @@ export function afficherPageAccueil() {
  * Fonction 120 : Affichage de la page de login au click suivant l'état connecté ou deconnecté
  */
 let boutonLogin = document.querySelector(".login");
+let baliseModifier = document.querySelector(".modifier");
 export function pageLogin() {
     boutonLogin.addEventListener("click", () => {
         if (boutonLogin.innerText === "logout") {
             afficherPageAccueil();
             boutonLogin.innerText = "login";
             localStorage.removeItem("token");
+            localStorage.removeItem("userId");
             baliseModifier.style.display = "none";
         } else {
             afficherPageLogin();
@@ -46,18 +48,26 @@ export function afficherPageLogin() {
 }
 
 /**
+ * Fonction 130 : regroupement des fonctions nécessaire à l'initialisation de la partie login
+ */
+export function initLogin() {
+    let baliseLogin = document.querySelector("#affichage-login");
+    baliseLogin.style.display = "none"; // pour éviter la présence de login au chargement de la page initial
+    pageAccueil(); //pour rediriger vers l'accueil en cas d'appui sur l'onglet "projets"
+    pageLogin();
+}
+
+/**
  * Fonction main de la partie login:  pour tester le couple identiofiant mot de passe
  * @param {*} event
- * @return Le token
  */
 export async function testerConnexion(event) {
     event.preventDefault();
     let connexionStatus = false;
     let baliseMail = document.querySelector("#login-email");
-    let balisePassword = document.querySelector("#password");
     let mailValue = baliseMail.value;
+    let balisePassword = document.querySelector("#password");
     let passwordValue = balisePassword.value;
-    let token = "";
 
     try {
         const loginPath = "http://localhost:5678/api/users/login";
@@ -71,10 +81,10 @@ export async function testerConnexion(event) {
         };
 
         const reponse = await fetch(loginPath, objetLogin);
-        const tokenResponse = await reponse.json();
-        token = await tokenResponse.token;
+        const responseDeserialized = await reponse.json();
 
-        window.localStorage.setItem("token", tokenResponse.token);
+        window.localStorage.setItem("token", await responseDeserialized.token);
+        window.localStorage.setItem("userId", await responseDeserialized.userId);
 
         if (reponse.status !== 200) {
             connexionStatus = false;
@@ -91,5 +101,4 @@ export async function testerConnexion(event) {
     } catch (error) {
         console.log(error);
     }
-    return await token;
 }
