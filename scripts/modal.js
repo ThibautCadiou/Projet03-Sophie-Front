@@ -12,11 +12,14 @@ export function ouvertureModal() {
     });
 }
 
+export function viderMinyGallery() {
+    let baliseIncrustationPhotos = document.querySelector(".modal-gallery");
+    baliseIncrustationPhotos.innerHTML = "";
+}
 /**
  * Fonction  210 :Gère la génération des travaux dans la modale 01
  * @param {Array.<object>} listeTravaux
  */
-let baliseMiniTravaux = null;
 export function afficherMiniTravaux(listeTravaux) {
     for (let i = 0; i < listeTravaux.length; i++) {
         const element = listeTravaux[i];
@@ -38,10 +41,8 @@ export function afficherMiniTravaux(listeTravaux) {
 
         baliseIncrustationPhotos.appendChild(baliseParentMiniPhoto);
     }
-    baliseMiniTravaux = document.querySelectorAll(".fa-trash-can");
-    for (let i = 0; i < baliseMiniTravaux.length; i++) {
-        const element = baliseMiniTravaux[i];
-    }
+    let baliseMiniTravaux = document.querySelectorAll(".fa-trash-can");
+    return baliseMiniTravaux;
 }
 
 /**
