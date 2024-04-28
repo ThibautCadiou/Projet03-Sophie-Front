@@ -16,6 +16,8 @@ baliseFormulaire.addEventListener("submit", async function (event) {
 // ******** Modal ********
 ouvertureModal();
 let baliseMiniTravaux = await afficherMiniTravaux(travaux);
+cliqueSurCorbeilles();
+console.log(baliseMiniTravaux);
 
 /**
  * Fonction qui permet de renvoyer l'id d'un travail que l'on souhaite supprimer en fonction de l'url de l'image de ce meme travail
@@ -30,6 +32,10 @@ function renvoyerIdFromUrl(url) {
     return myImg[0].id;
 }
 
+/**
+ * Fonction qui supprime le travail lors du click sur la poubelle associée
+ * @param {*} event l'event lié au click sur une trashcan
+ */
 async function supprimerTravail(event) {
     const elementClique = event.target;
 
@@ -51,29 +57,32 @@ async function supprimerTravail(event) {
     // on fait la requete pour supprimer le travail
     const fetchPathForDelete = "http://localhost:5678/api/works/" + id;
     const myToken = localStorage.getItem("token");
-    fetch(fetchPathForDelete, {
+    let response = await fetch(fetchPathForDelete, {
         method: "DELETE",
         headers: {
+            accept: "*/*",
             Authorization: `Bearer ${myToken}`,
         },
         body: { id: id },
     });
+    console.log(response);
 }
 // on met a jour les travaux
 
-for (let i = 0; i < baliseMiniTravaux.length; i++) {
-    const element = baliseMiniTravaux[i];
-    element.addEventListener("click", async function (event) {
-        supprimerTravail(event);
-        let tandc = await recupererTravauxEtCategories("http://localhost:5678/api/works", "http://localhost:5678/api/categories");
-        const newTravaux = tandc[0];
-        viderGallery();
-        viderMinyGallery();
-        afficherTravaux(newTravaux);
-        afficherMiniTravaux(newTravaux);
-    });
+function cliqueSurCorbeilles() {
+    for (let i = 0; i < baliseMiniTravaux.length; i++) {
+        const element = baliseMiniTravaux[i];
+        element.addEventListener("click", async function (event) {
+            console.log("on lance la suppression d'un travail");
+            await supprimerTravail(event);
+            let tandc = await recupererTravauxEtCategories("http://localhost:5678/api/works", "http://localhost:5678/api/categories");
+            const newTravaux = await tandc[0];
+            viderGallery();
+            viderMinyGallery();
+            await afficherTravaux(newTravaux);
+            baliseMiniTravaux = await afficherMiniTravaux(newTravaux);
+            console.log(await baliseMiniTravaux);
+            cliqueSurCorbeilles();
+        });
+    }
 }
-//quand on clique sur une poubelle declencher un event liosteners
-
-// trouver l'objet parent associé à la poubelle
-// console.log(travaux[0]);
