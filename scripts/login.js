@@ -1,6 +1,5 @@
 import { workPath, catPath } from "/scripts/main.js";
-import { resetAfichage, activerFiltreTous } from "/scripts/gallerie.js";
-import { genererProjets, recupererTravauxEtCategories, afficherTravaux, viderGallery } from "/scripts/gallerie.js";
+import { resetAfichage, viderGallery, genererProjets } from "/scripts/gallerie.js";
 
 /**
  * Fonction 110 : Affichage de la page d'accueil sur click du bouton projet
@@ -42,6 +41,7 @@ export async function pageLogin() {
             baliseFiltres.classList.add("afficher-les-boutons");
             // console.log("on devrais activer le filtre tous");
             // activerFiltreTous();
+
             genererProjets();
         } else {
             afficherPageLogin();

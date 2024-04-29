@@ -198,6 +198,7 @@ export async function genererProjets() {
     let baliseBoutons = document.querySelectorAll(".filtres button"); //Récupération des bouttons
     let filtreActif = [];
     let travauxFiltres = [...travaux];
+    viderGallery();
     afficherTravaux(travauxFiltres); // on met tous les travaux pour le démarrage
 
     for (let i = 0; i < baliseBoutons.length; i++) {
