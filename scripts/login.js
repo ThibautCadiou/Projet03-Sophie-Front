@@ -1,3 +1,7 @@
+import { workPath, catPath } from "/scripts/main.js";
+import { resetAfichage, activerFiltreTous } from "/scripts/gallerie.js";
+import { genererProjets, recupererTravauxEtCategories, afficherTravaux, viderGallery } from "/scripts/gallerie.js";
+
 /**
  * Fonction 110 : Affichage de la page d'accueil sur click du bouton projet
  */
@@ -24,8 +28,9 @@ export function afficherPageAccueil() {
  */
 let boutonLogin = document.querySelector(".login");
 let baliseModifier = document.querySelector(".modifier");
-export function pageLogin() {
+export async function pageLogin() {
     boutonLogin.addEventListener("click", () => {
+        resetAfichage();
         if (boutonLogin.innerText === "logout") {
             afficherPageAccueil();
             boutonLogin.innerText = "login";
@@ -35,6 +40,9 @@ export function pageLogin() {
             let baliseFiltres = document.querySelector(".filtres");
             baliseFiltres.classList.remove("cacher-les-boutons");
             baliseFiltres.classList.add("afficher-les-boutons");
+            // console.log("on devrais activer le filtre tous");
+            // activerFiltreTous();
+            genererProjets();
         } else {
             afficherPageLogin();
         }
@@ -99,6 +107,7 @@ export async function testerConnexion(event) {
             let baliseModifier = document.querySelector(".modifier");
             baliseModifier.style.display = "flex";
             let baliseFiltres = document.querySelector(".filtres");
+            baliseFiltres.classList.remove("afficher-les-boutons");
             baliseFiltres.classList.add("cacher-les-boutons");
         }
     } catch (error) {

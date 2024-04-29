@@ -1,7 +1,14 @@
+import { afficherTravaux, recupererTravaux } from "/scripts/gallerie.js";
+import { workPath } from "/scripts/main.js";
+
 /**
  * Fonction 200 : gère l'ouverture de la modale
  */
-export function ouvertureModal() {
+export async function ouvertureModal() {
+    // on réaffiche la totalité des travaux dans la fenetre principale
+    let travaux = await recupererTravaux(workPath);
+    afficherTravaux(travaux);
+
     const baliseModal = document.querySelector(".modal");
     const baliseOverlay = document.querySelector(".overlay");
     const baliseOpenButton = document.querySelector(".modifier");

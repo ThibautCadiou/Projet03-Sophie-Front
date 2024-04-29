@@ -3,6 +3,9 @@ import { initLogin, testerConnexion } from "/scripts/login.js";
 import { afficherMiniTravaux, setModalToAddPicture, ouvertureModal, viderMinyGallery } from "/scripts/modal.js";
 
 // ******** Main ********
+export const workPath = "http://localhost:5678/api/works";
+export const catPath = "http://localhost:5678/api/categories";
+
 let travaux = await genererProjets(); // pour générer la page de base
 
 initLogin(); // On réagi à l'appui sur l'onglet login
@@ -17,7 +20,6 @@ baliseFormulaire.addEventListener("submit", async function (event) {
 ouvertureModal();
 let baliseMiniTravaux = await afficherMiniTravaux(travaux);
 cliqueSurCorbeilles();
-console.log(baliseMiniTravaux);
 
 /**
  * Fonction qui permet de renvoyer l'id d'un travail que l'on souhaite supprimer en fonction de l'url de l'image de ce meme travail
@@ -75,7 +77,7 @@ function cliqueSurCorbeilles() {
         element.addEventListener("click", async function (event) {
             console.log("on lance la suppression d'un travail");
             await supprimerTravail(event);
-            let tandc = await recupererTravauxEtCategories("http://localhost:5678/api/works", "http://localhost:5678/api/categories");
+            let tandc = await recupererTravauxEtCategories(workPath, catPath);
             const newTravaux = await tandc[0];
             viderGallery();
             viderMinyGallery();

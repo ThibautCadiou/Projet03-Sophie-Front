@@ -1,18 +1,43 @@
+import { workPath, catPath } from "/scripts/main.js";
 /**
  * Fonction 010 de la partie gallerie : Récupérer la liste des travaux et des catégories depuis l'API grace aux routes indiquées
  * @param {string} worksPath Le chemin ou l'url de l'api donnant la liste des travaux
  * @param {string} catPath Le chemin ou l'url de l'API donnant la lits edes catégories
  * @returns {Array} une liste dont le premier élément est la liste des travaux et le second la liste des catégories
  */
-export async function recupererTravauxEtCategories(worksPath, catPath) {
+export async function recupererTravauxEtCategories() {
     // Récupération des travaux
-    const reponseWorks = await fetch(worksPath);
+    const reponseWorks = await fetch(workPath);
     const travaux = await reponseWorks.json();
 
     // Récupération des catégories
     const reponseCategories = await fetch(catPath);
     const categories = await reponseCategories.json();
     return [travaux, categories];
+}
+
+/**
+ * Fonction 011 de la partie gallerie : Récupérer la liste des travaux depuis l'API grace aux routes indiquées
+ * @param {*} workPath
+ * @returns
+ */
+export async function recupererTravaux() {
+    // Récupération des travaux
+    const reponseWorks = await fetch(workPath);
+    const travaux = await reponseWorks.json();
+    return travaux;
+}
+
+/**
+ * Fonction 012 de la partie gallerie : Récupérer la liste des categories depuis l'API grace aux routes indiquées
+ * @param {*} worksPath
+ * @returns
+ */
+export async function recupererCategories() {
+    // Récupération des travaux
+    const reponseWorks = await fetch(catPath);
+    const categories = await reponseWorks.json();
+    return categories;
 }
 
 /**
@@ -40,6 +65,22 @@ export function genererBouttons(categories) {
     }
 
     return categoriesAvecTous;
+}
+
+export function activerFiltreTous() {
+    console.log("on es dans la fct filtre tous");
+    let balisesFiltres = document.querySelector(".filtres-rapides");
+    for (let i = 0; i < balisesFiltres.length; i++) {
+        const element = balisesFiltres[i];
+        element.classList.remove("filtre-actif");
+        element.classList.remove("filtre-inactif");
+        console.log("on change l'état des filtres");
+        if (i === 0) {
+            element.classList.add("filtre-actif"); // on crée le premier bouton "tous" avec le filtre actif
+        } else {
+            element.classList.add("filtre-inactif"); // on crée tout les boutons avec le type inactif
+        }
+    }
 }
 
 /**
@@ -112,6 +153,14 @@ export function viderGallery() {
 }
 
 /**
+ * Fonctions 050 : On vide lles boutons
+ */
+export function viderBoutons() {
+    let baliseBoutons = document.querySelector(".filtres");
+    baliseBoutons.innerHTML = "";
+}
+
+/**
  * Fonction 060 : filtrage des travaux
  * @param {Array.<string>} travaux liste des travaux
  * @param {Array} categories liste des catégories récupérées depuis l'API
@@ -138,11 +187,12 @@ export function filtrerTravaux(travaux, categories, filtreActif, verbose = 0) {
  */
 export async function genererProjets() {
     // On récupère les travaux et les catégories
-    let travauxEtCategories = await recupererTravauxEtCategories("http://localhost:5678/api/works", "http://localhost:5678/api/categories");
+    let travauxEtCategories = await recupererTravauxEtCategories(workPath, catPath);
     let travaux = travauxEtCategories[0];
     let categories = travauxEtCategories[1];
 
     // on génère les boutons avec les infos de la route /categories
+    viderBoutons();
     categories = genererBouttons(categories);
 
     let baliseBoutons = document.querySelectorAll(".filtres button"); //Récupération des bouttons
@@ -155,6 +205,7 @@ export async function genererProjets() {
 
         element.addEventListener("click", (event) => {
             filtreActif = toggleButton(event.target.id, filtreActif);
+            console.log(event.target.id);
             if (filtreActif === -1) {
                 viderGallery();
             } else {
@@ -169,4 +220,12 @@ export async function genererProjets() {
         });
     }
     return travaux;
+}
+
+export async function resetAfichage() {
+    const filtreActif = toggleButton("tous", []);
+    let travaux = await recupererTravaux();
+    const categorie = await recupererCategories();
+    viderGallery();
+    afficherTravaux(travaux);
 }
