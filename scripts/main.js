@@ -71,7 +71,6 @@ function cliqueSurCorbeilles() {
             viderMinyGallery();
             await afficherTravaux(newTravaux);
             baliseMiniTravaux = await afficherMiniTravaux(newTravaux);
-            console.log(await baliseMiniTravaux);
             cliqueSurCorbeilles();
         });
     }

@@ -1,5 +1,4 @@
-import { workPath, catPath } from "/scripts/main.js";
-import { resetAfichage, viderGallery, genererProjets } from "/scripts/gallerie.js";
+import { resetAfichage, genererProjets } from "/scripts/gallerie.js";
 
 /**
  * Fonction 110 : Affichage de la page d'accueil sur click du bouton projet
