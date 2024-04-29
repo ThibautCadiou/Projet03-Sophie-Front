@@ -715,3 +715,8 @@ form label[for="categorie"] {
     opacity: 1;
     pointer-events: auto;
 }
+
+.btnValiderGris {
+    color: white;
+    background-color: #a7a7a7;
+}

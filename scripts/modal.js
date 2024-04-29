@@ -1,5 +1,6 @@
 import { afficherTravaux, recupererTravaux } from "/scripts/gallerie.js";
 import { workPath } from "/scripts/main.js";
+import { recupererCategories } from "/scripts/gallerie.js";
 
 /**
  * Fonction 200 : gère l'ouverture de la modale
@@ -20,7 +21,7 @@ export async function ouvertureModal() {
 }
 
 /**
- * Fonction spour vider la mini gallery
+ * Fonction pour vider la mini gallery
  */
 export function viderMinyGallery() {
     let baliseIncrustationPhotos = document.querySelector(".modal-gallery");
@@ -63,12 +64,26 @@ let baliseModalTitle = document.querySelector(".modal-title");
 let baliseGallery = document.querySelector(".modal-gallery");
 let baliseBackArrow = document.querySelector(".back-modal");
 let balisemodalAddPhoto = document.querySelector(".modal-add-photo");
-export function setModalToAddPicture() {
-    baliseModalTitle.textContent = "Ajout photo";
-    baliseGallery.style.display = "none";
-    baliseAjoutPhoto.textContent = "Valider";
-    baliseBackArrow.style.display = "flex";
+export async function setModalToAddPicture() {
+    baliseModalTitle.textContent = "Ajout photo"; // titre
+    baliseGallery.style.display = "none"; // on cache la gallerie
+    baliseAjoutPhoto.textContent = "Valider"; // on change le texte du bouton valider
+    baliseAjoutPhoto.classList.add("btnValiderGris");
+    baliseBackArrow.style.display = "flex"; // on affiche la fleche de retour
     balisemodalAddPhoto.style.display = "flex";
+
+    //on récupère les catégories
+    const categories = await recupererCategories();
+
+    //pour chaque categories, on récupère le nom , on crée l'élément html "option" et on lajoute au parent
+    const baliseParentMenuDreoulant = document.querySelector("#categorie"); // on génère le formulaire avec les valeur pour les catégories
+    for (let i = 0; i < categories.length; i++) {
+        const categorie = categories[i];
+        const categorieName = document.createElement("option");
+        categorieName.value = categorie.name;
+        categorieName.innerText = categorie.name;
+        baliseParentMenuDreoulant.appendChild(categorieName);
+    }
 }
 
 /**
@@ -82,6 +97,12 @@ export function setModalToNormal() {
     baliseBackArrow.style.display = "none";
     balisemodalAddPhoto.style.display = "none";
     baliseRechercheInfosImage.style.display = "flex";
+    const baliseApercuImageToAdd = document.querySelector("#apercu-photo-to-add");
+    baliseApercuImageToAdd.src = "";
+    const baliseTitreNewWork = document.querySelector("#titre");
+    baliseTitreNewWork.value = "";
+    const baliseMenuDeroulant = document.querySelector("#categorie");
+    baliseMenuDeroulant.innerHTML = "";
 }
 
 baliseBackArrow.addEventListener("click", (event) => {
@@ -101,11 +122,11 @@ baliseCloseButton.addEventListener("click", () => {
 });
 
 const baliseOverlay = document.querySelector(".overlay");
-
 baliseOverlay.addEventListener("click", () => {
     closeModal();
     setModalToNormal();
 });
+
 // Arrêter la propagation du clic à l'intérieur de la fenêtre modale
 baliseModal.addEventListener("click", (event) => {
     event.stopPropagation(); // Empêche la propagation du clic aux éléments sous-jacents
@@ -175,3 +196,11 @@ baliseAjoutPhoto.addEventListener("click", (event) => {
         setModalToAddPicture();
     }
 });
+
+//mettre le bouton valider au vert quand les trois champs son plein
+
+// fonction de vérif des 3 trucs
+
+//add event listeners sur  la photo
+//add event listeners sur le titre
+//add event listeners sur la categorie
