@@ -30,7 +30,6 @@ function renvoyerIdFromUrl(url) {
     const myImg = travaux.filter(function (travail) {
         return travail.imageUrl === url;
     });
-    console.log(myImg);
     return myImg[0].id;
 }
 
@@ -41,20 +40,10 @@ function renvoyerIdFromUrl(url) {
 async function supprimerTravail(event) {
     const elementClique = event.target;
 
-    //on recupere le parent
-    const parent = elementClique.parentElement;
-    console.log(`Le parent est : ${parent}`);
-
-    // dans ses enfants, on trouve le travail qui a ce chemin 'imageUrl'
-    const childImage = parent.firstChild;
-    console.log(`Le premier enfant est : ${childImage}`);
-
+    const parent = elementClique.parentElement; // on recupere le parent
+    const childImage = parent.firstChild; // dans ses enfants, on trouve le travail qui a ce chemin 'imageUrl'
     const imageUrl = childImage.src;
-    console.log(`L'Url de cette image est : ${imageUrl}`);
-
-    //on récupère l'id du travail en question
-    const id = renvoyerIdFromUrl(imageUrl);
-    console.log(`Id de l'élément a supprimer : ${id}`);
+    const id = renvoyerIdFromUrl(imageUrl); //on récupère l'id du travail en question
 
     // on fait la requete pour supprimer le travail
     const fetchPathForDelete = "http://localhost:5678/api/works/" + id;
@@ -69,7 +58,6 @@ async function supprimerTravail(event) {
     });
     console.log(response);
 }
-// on met a jour les travaux
 
 function cliqueSurCorbeilles() {
     for (let i = 0; i < baliseMiniTravaux.length; i++) {

@@ -39,8 +39,6 @@ export async function pageLogin() {
             let baliseFiltres = document.querySelector(".filtres");
             baliseFiltres.classList.remove("cacher-les-boutons");
             baliseFiltres.classList.add("afficher-les-boutons");
-            // console.log("on devrais activer le filtre tous");
-            // activerFiltreTous();
 
             genererProjets();
         } else {

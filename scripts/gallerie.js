@@ -68,13 +68,11 @@ export function genererBouttons(categories) {
 }
 
 export function activerFiltreTous() {
-    console.log("on es dans la fct filtre tous");
     let balisesFiltres = document.querySelector(".filtres-rapides");
     for (let i = 0; i < balisesFiltres.length; i++) {
         const element = balisesFiltres[i];
         element.classList.remove("filtre-actif");
         element.classList.remove("filtre-inactif");
-        console.log("on change l'état des filtres");
         if (i === 0) {
             element.classList.add("filtre-actif"); // on crée le premier bouton "tous" avec le filtre actif
         } else {
@@ -206,7 +204,6 @@ export async function genererProjets() {
 
         element.addEventListener("click", (event) => {
             filtreActif = toggleButton(event.target.id, filtreActif);
-            console.log(event.target.id);
             if (filtreActif === -1) {
                 viderGallery();
             } else {
