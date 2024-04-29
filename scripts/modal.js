@@ -68,6 +68,7 @@ export async function setModalToAddPicture() {
     baliseModalTitle.textContent = "Ajout photo"; // titre
     baliseGallery.style.display = "none"; // on cache la gallerie
     baliseAjoutPhoto.textContent = "Valider"; // on change le texte du bouton valider
+    baliseAjoutPhoto.classList.add("desactiver-boutons");
     baliseAjoutPhoto.classList.add("btnValiderGris");
     baliseBackArrow.style.display = "flex"; // on affiche la fleche de retour
     balisemodalAddPhoto.style.display = "flex";
@@ -203,9 +204,36 @@ baliseAjoutPhoto.addEventListener("click", (event) => {
 });
 
 //mettre le bouton valider au vert quand les trois champs son plein
-
 // fonction de vérif des 3 trucs
+function verifierChamps(b1, b2, b3) {
+    console.log(`b1: ${b1.value}`);
+    console.log(`b2: ${b2.value}`);
+    console.log(`b3: ${b3.value}`);
+    if (b1.value === "" || b2.value === "" || b3.value === "none") {
+        baliseAjoutPhoto.classList.add("btnValiderGris");
+        baliseAjoutPhoto.classList.add("desactiver-boutons");
+        console.log("Un champ au moins est vide");
+    } else {
+        baliseAjoutPhoto.classList.remove("btnValiderGris");
+        baliseAjoutPhoto.classList.remove("desactiver-boutons");
+        console.log("Les trois champs sont au vert !");
+    }
+}
 
 //add event listeners sur  la photo
+let baliseChoisirFichier = document.querySelector("#choisir-fichier");
+baliseChoisirFichier.addEventListener("change", function (event) {
+    verifierChamps(baliseChoisirFichier, baliseTitreNewWork, baliseParentMenuDreoulant);
+});
+
 //add event listeners sur le titre
+const baliseTitreNewWork = document.querySelector("#titre");
+baliseTitreNewWork.addEventListener("change", function (event) {
+    verifierChamps(baliseChoisirFichier, baliseTitreNewWork, baliseParentMenuDreoulant);
+});
+
 //add event listeners sur la categorie
+const baliseParentMenuDreoulant = document.querySelector("#categorie"); // on génère le formulaire avec les valeur pour les catégories
+baliseParentMenuDreoulant.addEventListener("change", function (event) {
+    verifierChamps(baliseChoisirFichier, baliseTitreNewWork, baliseParentMenuDreoulant);
+});

@@ -711,6 +711,10 @@ form label[for="categorie"] {
     pointer-events: none;
 }
 
+.desactiver-boutons {
+    pointer-events: none;
+}
+
 .afficher-les-boutons {
     opacity: 1;
     pointer-events: auto;
