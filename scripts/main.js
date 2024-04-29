@@ -63,7 +63,6 @@ function cliqueSurCorbeilles() {
     for (let i = 0; i < baliseMiniTravaux.length; i++) {
         const element = baliseMiniTravaux[i];
         element.addEventListener("click", async function (event) {
-            console.log("on lance la suppression d'un travail");
             await supprimerTravail(event);
             let tandc = await recupererTravauxEtCategories(workPath, catPath);
             const newTravaux = await tandc[0];
