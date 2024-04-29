@@ -1,7 +1,7 @@
 import { genererProjets, recupererTravauxEtCategories, afficherTravaux, viderGallery } from "/scripts/gallerie.js";
 import { initLogin, testerConnexion } from "/scripts/login.js";
 import { afficherMiniTravaux, setModalToAddPicture, ouvertureModal, viderMinyGallery } from "/scripts/modal.js";
-
+import { supprimerTravail } from "/scripts/suppress-work.js";
 // ******** Main ********
 export const workPath = "http://localhost:5678/api/works";
 export const catPath = "http://localhost:5678/api/categories";
@@ -33,37 +33,11 @@ function renvoyerIdFromUrl(url) {
     return myImg[0].id;
 }
 
-/**
- * Fonction qui supprime le travail lors du click sur la poubelle associée
- * @param {*} event l'event lié au click sur une trashcan
- */
-async function supprimerTravail(event) {
-    const elementClique = event.target;
-
-    const parent = elementClique.parentElement; // on recupere le parent
-    const childImage = parent.firstChild; // dans ses enfants, on trouve le travail qui a ce chemin 'imageUrl'
-    const imageUrl = childImage.src;
-    const id = renvoyerIdFromUrl(imageUrl); //on récupère l'id du travail en question
-
-    // on fait la requete pour supprimer le travail
-    const fetchPathForDelete = "http://localhost:5678/api/works/" + id;
-    const myToken = localStorage.getItem("token");
-    let response = await fetch(fetchPathForDelete, {
-        method: "DELETE",
-        headers: {
-            accept: "*/*",
-            Authorization: `Bearer ${myToken}`,
-        },
-        body: { id: id },
-    });
-    console.log(response);
-}
-
 function cliqueSurCorbeilles() {
     for (let i = 0; i < baliseMiniTravaux.length; i++) {
         const element = baliseMiniTravaux[i];
         element.addEventListener("click", async function (event) {
-            await supprimerTravail(event);
+            await supprimerTravail(event, travaux);
             let tandc = await recupererTravauxEtCategories(workPath, catPath);
             const newTravaux = await tandc[0];
             viderGallery();

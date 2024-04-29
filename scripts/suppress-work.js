@@ -13,31 +13,6 @@ function renvoyerIdFromUrl(url, travaux) {
     });
     return myImg[0].id;
 }
-/**
- * Fonction qui supprime le travail lors du click sur la poubelle associée
- * @param {*} event l'event lié au click sur une trashcan
- */
-async function supprimerTravail(event, travaux) {
-    const elementClique = event.target;
-    const parent = elementClique.parentElement; //on recupere le parent
-    const childImage = parent.firstChild; // dans ses enfants, on trouve le travail qui a ce chemin 'imageUrl'
-    const imageUrl = childImage.src;
-
-    //on récupère l'id du travail en question
-    const id = renvoyerIdFromUrl(imageUrl, travaux);
-
-    // on fait la requete pour supprimer le travail
-    const fetchPathForDelete = "http://localhost:5678/api/works/" + id;
-    const myToken = localStorage.getItem("token");
-    let response = await fetch(fetchPathForDelete, {
-        method: "DELETE",
-        headers: {
-            accept: "*/*",
-            Authorization: `Bearer ${myToken}`,
-        },
-        body: { id: id },
-    });
-}
 
 /**
  *
@@ -59,4 +34,30 @@ export async function cliqueSurCorbeilles(baliseMiniTravaux, travaux) {
         });
     }
     return baliseMiniTravaux;
+}
+
+/**
+ * Fonction qui supprime le travail lors du click sur la poubelle associée
+ * @param {*} event l'event lié au click sur une trashcan
+ */
+export async function supprimerTravail(event, travaux) {
+    const elementClique = event.target;
+
+    const parent = elementClique.parentElement; // on recupere le parent
+    const childImage = parent.firstChild; // dans ses enfants, on trouve le travail qui a ce chemin 'imageUrl'
+    const imageUrl = childImage.src;
+    const id = renvoyerIdFromUrl(imageUrl, travaux); //on récupère l'id du travail en question
+
+    // on fait la requete pour supprimer le travail
+    const fetchPathForDelete = "http://localhost:5678/api/works/" + id;
+    const myToken = localStorage.getItem("token");
+    let response = await fetch(fetchPathForDelete, {
+        method: "DELETE",
+        headers: {
+            accept: "*/*",
+            Authorization: `Bearer ${myToken}`,
+        },
+        body: { id: id },
+    });
+    console.log(response);
 }
