@@ -19,10 +19,14 @@ export async function ouvertureModal() {
     });
 }
 
+/**
+ * Fonction spour vider la mini gallery
+ */
 export function viderMinyGallery() {
     let baliseIncrustationPhotos = document.querySelector(".modal-gallery");
     baliseIncrustationPhotos.innerHTML = "";
 }
+
 /**
  * Fonction  210 :Gère la génération des travaux dans la modale 01
  * @param {Array.<object>} listeTravaux

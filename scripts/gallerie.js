@@ -67,6 +67,9 @@ export function genererBouttons(categories) {
     return categoriesAvecTous;
 }
 
+/**
+ * Fonction qui désactive tout les filtre mais active le filtre tous
+ */
 export function activerFiltreTous() {
     let balisesFiltres = document.querySelector(".filtres-rapides");
     for (let i = 0; i < balisesFiltres.length; i++) {
@@ -151,7 +154,7 @@ export function viderGallery() {
 }
 
 /**
- * Fonctions 050 : On vide lles boutons
+ * Fonctions 050 : On vide les boutons
  */
 export function viderBoutons() {
     let baliseBoutons = document.querySelector(".filtres");
