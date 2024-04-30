@@ -9,7 +9,7 @@ export const workPath = "http://localhost:5678/api/works";
 export const catPath = "http://localhost:5678/api/categories";
 export const addPath = "http://localhost:5678/api/works";
 
-let travaux = await genererProjets(); // pour générer la page de base
+await genererProjets(); // pour générer la page de base
 
 initLogin(); // On réagi à l'appui sur l'onglet login
 
@@ -21,5 +21,5 @@ baliseFormulaire.addEventListener("submit", async function (event) {
 
 // ******** Modal ********
 ouvertureModal();
-let baliseMiniTravaux = await afficherMiniTravaux(travaux);
-cliqueSurCorbeilles(baliseMiniTravaux, travaux);
+let baliseMiniTravaux = await afficherMiniTravaux();
+cliqueSurCorbeilles(baliseMiniTravaux);

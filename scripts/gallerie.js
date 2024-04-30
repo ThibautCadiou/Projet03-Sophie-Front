@@ -90,7 +90,8 @@ export function activerFiltreTous() {
  * Fonction 030 de la partie gallerie: Permet d'afficher la liste de travaux envoyés en paramètre
  * @param {Array} myList La liste des travaux à afficher
  */
-export function afficherTravaux(myList) {
+export function afficherTravaux() {
+    let myList = recupererTravaux();
     const baliseParentFigure = document.querySelector(".gallery");
     for (let i = 0; i < myList.length; i++) {
         const element = myList[i];

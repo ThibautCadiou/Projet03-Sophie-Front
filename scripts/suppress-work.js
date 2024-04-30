@@ -1,4 +1,4 @@
-import { recupererTravauxEtCategories, afficherTravaux, viderGallery } from "/scripts/gallerie.js";
+import { recupererTravaux, recupererTravauxEtCategories, afficherTravaux, viderGallery } from "/scripts/gallerie.js";
 import { afficherMiniTravaux, viderMinyGallery } from "/scripts/modal.js";
 import { workPath, catPath } from "/scripts/main.js";
 
@@ -18,7 +18,8 @@ function renvoyerIdFromUrl(url, travaux) {
  * Fonction qui supprime le travail lors du click sur la poubelle associée
  * @param {*} event l'event lié au click sur une trashcan
  */
-export async function supprimerTravail(event, travaux) {
+export async function supprimerTravail(event) {
+    let travaux = recupererTravaux();
     const elementClique = event.target;
 
     const parent = elementClique.parentElement; // on recupere le parent
@@ -45,18 +46,18 @@ export async function supprimerTravail(event, travaux) {
  * @param {*} baliseMiniTravaux Les balises des mini travaux affichés dans la modale
  * @param {*} travaux L'ensemble des travaux récupérés depuis l'API
  */
-export async function cliqueSurCorbeilles(baliseMiniTravaux, travaux) {
+export async function cliqueSurCorbeilles(baliseMiniTravaux) {
     for (let i = 0; i < baliseMiniTravaux.length; i++) {
         const element = baliseMiniTravaux[i];
         element.addEventListener("click", async function (event) {
-            await supprimerTravail(event, travaux);
+            await supprimerTravail(event);
             let tandc = await recupererTravauxEtCategories();
             const newTravaux = await tandc[0];
             viderGallery();
             viderMinyGallery();
             await afficherTravaux(newTravaux);
             baliseMiniTravaux = await afficherMiniTravaux(newTravaux);
-            cliqueSurCorbeilles(baliseMiniTravaux, travaux);
+            cliqueSurCorbeilles(baliseMiniTravaux);
         });
     }
 }

@@ -32,9 +32,10 @@ export function viderMinyGallery() {
  * Fonction  210 :Gère la génération des travaux dans la modale 01
  * @param {Array.<object>} listeTravaux
  */
-export function afficherMiniTravaux(listeTravaux) {
-    for (let i = 0; i < listeTravaux.length; i++) {
-        const element = listeTravaux[i];
+export function afficherMiniTravaux() {
+    let travaux = recupererTravaux();
+    for (let i = 0; i < travaux.length; i++) {
+        const element = travaux[i];
         let baliseIncrustationPhotos = document.querySelector(".modal-gallery");
         let baliseParentMiniPhoto = document.createElement("div");
         baliseParentMiniPhoto.classList.add("myCard");
