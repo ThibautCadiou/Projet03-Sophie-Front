@@ -25,7 +25,7 @@ export async function recupererCategories() {
  *
  * @returns l'ensemble des catégories incluant "Tous"
  */
-export async function genererBouttons() {
+async function genererBouttons() {
     const categories = await recupererCategories();
     let categoriesAvecTous = [{ id: 0, name: "Tous" }]; // on initialise une liste pour créer les boutons des filtres en ajoutant "tous"
     categoriesAvecTous.push(...categories); //on ajoute les catégories récupérées depuis l'API
@@ -36,35 +36,74 @@ export async function genererBouttons() {
         i === 0 ? baliseElementEnfant.classList.add("filtre-actif") : baliseElementEnfant.classList.add("filtre-inactif"); //c'est le style suivant actif ou inactif. on initialise "tous" a actif
         baliseElementEnfant.classList.add("filtres-rapides"); // c'est le style des boutons
         baliseElementEnfant.innerText = element.name;
-        //baliseElementEnfant.id = element.name.split(" ")[0].toLowerCase(); // on ajoute en id le premier mot du nom de la categorie en minuscule
+        baliseElementEnfant.id = element.name.split(" ")[0].toLowerCase(); // on ajoute en id le premier mot du nom de la categorie en minuscule
         balisePortfolio.appendChild(baliseElementEnfant);
     }
     return categoriesAvecTous;
 }
 
 /**
- * Fonction qui désactive tout les filtre mais active le filtre tous
+ * On vide la gallerie
  */
-export function activerFiltreTous() {
-    let balisesFiltres = document.querySelector(".filtres-rapides");
-    for (let i = 0; i < balisesFiltres.length; i++) {
-        const element = balisesFiltres[i];
-        element.classList.remove("filtre-actif");
-        element.classList.remove("filtre-inactif");
-        if (i === 0) {
-            element.classList.add("filtre-actif"); // on crée le premier bouton "tous" avec le filtre actif
-        } else {
-            element.classList.add("filtre-inactif"); // on crée tout les boutons avec le type inactif
-        }
+export function viderGallery() {
+    let baliseGallery = document.querySelector(".gallery");
+    baliseGallery.innerHTML = "";
+}
+
+/**
+ * On vide les boutons
+ */
+function viderBoutons() {
+    let baliseBoutons = document.querySelector(".filtres");
+    baliseBoutons.innerHTML = "";
+}
+
+/**
+ * @param {string} buttonId L'id du bouton qui a été cliqué
+ * @returns le innertext du bouton en question
+ */
+function toggleButton(buttonId) {
+    // on sélectionne tout les boutons de filtrage
+    let baliseAllButtons = document.querySelectorAll(".filtres-rapides");
+
+    //on toggle le bouton qui a été cliqué
+    let balise = document.querySelector(`#${buttonId}`);
+    if (balise.classList.contains("filtre-inactif")) {
+        turnOffAllButtons(baliseAllButtons); //on éteint tous les boutons
+        balise.classList.add("filtre-actif");
+        balise.classList.remove("filtre-inactif");
+        return balise.innerText;
+    } else {
+        turnOffAllButtons(baliseAllButtons); //on éteint tous les boutons
+        return -1;
     }
 }
 
 /**
- * Fonction 030 de la partie gallerie: Permet d'afficher la liste de travaux envoyés en paramètre
- * @param {Array} myList La liste des travaux à afficher
+ *
+ * @param {Array.<object>} travaux Liste des travaux à filtrer
+ * @param {Array.<object>} categories Liste des catégories incluant Tous
+ * @param {string} filtreActif Le inner text du filtre en cours
+ * @returns
  */
-export function afficherTravaux() {
-    let myList = recupererTravaux();
+function filtrerTravaux(travaux, categories, filtreActif) {
+    //on récupère l'id de la catégorie envoyer
+    let filtreActifId = categories.filter(function (cat) {
+        return cat.name === filtreActif;
+    });
+    const categoryId = filtreActifId[0].id;
+
+    let travauxFiltres = travaux.filter(function (travail) {
+        return travail.categoryId === categoryId;
+    });
+    return travauxFiltres;
+}
+
+/**
+ * Affiche les travaux passés en paramètres
+ * @param {Array.<object>} myList Liste des travaux à afficher
+ */
+export async function afficherTravaux(myList) {
     const baliseParentFigure = document.querySelector(".gallery");
     for (let i = 0; i < myList.length; i++) {
         const element = myList[i];
@@ -84,8 +123,8 @@ export function afficherTravaux() {
 }
 
 /**
- * Fonction 041 de la partie gallerie: fonction qui tourne tout les boutons en off
- * @param {object} baliseAllButtons Les balises de l'ensemble de tout les boutons incluant "Tous"
+ * Désactive tout les boutons
+ * @param {Array} baliseAllButtons L'ensembles des balises des bouton s de filtres
  */
 function turnOffAllButtons(baliseAllButtons) {
     for (let i = 0; i < baliseAllButtons.length; i++) {
@@ -98,69 +137,7 @@ function turnOffAllButtons(baliseAllButtons) {
 }
 
 /**
- * Fonction 040 de la partie gallerie: permet de mettre a jour les onglets de filtrage ainsi qu'une liste des catégorie à afficher
- * @param {string} buttonId Id du bouton sur lequel le click a été fait
- * @param {Array} filtreActif Liste contenant les filtres actifs à appliquer lors de l'affichage
- * @returns Le <string> avec le texte invlu dans le bouton
- */
-export function toggleButton(buttonId, filtreActif) {
-    // on sélectionne tout les boutons de filtrage
-    let baliseAllButtons = document.querySelectorAll(".filtres-rapides");
-
-    //on toggle le bouton qui a été cliqué
-    let balise = document.querySelector(`#${buttonId}`);
-    if (balise.classList.contains("filtre-inactif")) {
-        turnOffAllButtons(baliseAllButtons); //on éteint tous les boutons
-        balise.classList.add("filtre-actif");
-        balise.classList.remove("filtre-inactif");
-        filtreActif = balise.buttonId;
-        return balise.innerText;
-    } else {
-        turnOffAllButtons(baliseAllButtons); //on éteint tous les boutons
-        return -1;
-    }
-}
-
-/**
- * Fonctions 050 : On vide la gallery pour l'affichage des travaux filtré
- */
-export function viderGallery() {
-    let baliseGallery = document.querySelector(".gallery");
-    baliseGallery.innerHTML = "";
-}
-
-/**
- * Fonctions 050 : On vide les boutons
- */
-export function viderBoutons() {
-    let baliseBoutons = document.querySelector(".filtres");
-    baliseBoutons.innerHTML = "";
-}
-
-/**
- * Fonction 060 : filtrage des travaux
- * @param {Array.<string>} travaux liste des travaux
- * @param {Array} categories liste des catégories récupérées depuis l'API
- * @param {Array} filtreActif liste de string avec le nom des filtres appliqués
- * @param {number} verbose pouravoir un retour d'informations lors du debug
- * @returns La liste des travaux à afficher en fonction des filtres
- */
-export function filtrerTravaux(travaux, categories, filtreActif, verbose = 0) {
-    //on récupère l'id de la catégorie envoyer
-    let filtreActifId = categories.filter(function (cat) {
-        return cat.name === filtreActif;
-    });
-    const categoryId = filtreActifId[0].id;
-
-    let travauxFiltres = travaux.filter(function (travail) {
-        return travail.categoryId === categoryId;
-    });
-    return travauxFiltres;
-}
-
-/**
- * Fonction main de la partie gallerie
- * @returns la liste de tout les travaux
+ * Fonction qui génère les boutons de filtrage et gère l'affichage de la gallerie en fonction du filtre cliqué
  */
 export async function genererProjets() {
     let travaux = await recupererTravaux();
@@ -168,22 +145,22 @@ export async function genererProjets() {
 
     // on génère les boutons avec les infos de la route /categories
     viderBoutons();
-    categories = genererBouttons(categories);
+    categories = await genererBouttons(categories);
+    afficherTravaux(travaux); // on affiche tous les travaux au début
 
-    let baliseBoutons = document.querySelectorAll(".filtres button"); //Récupération des bouttons
+    // on réagi à l'appui sur les boutons de filtrage
+    let baliseBoutons = document.querySelectorAll("#filtres button"); //Récupération des bouttons
     let filtreActif = [];
-    let travauxFiltres = [...travaux];
-
     for (let i = 0; i < baliseBoutons.length; i++) {
         const element = baliseBoutons[i];
 
         element.addEventListener("click", (event) => {
             filtreActif = toggleButton(event.target.id, filtreActif);
+            viderGallery();
             if (filtreActif === -1) {
-                viderGallery();
+                afficherTravaux(travaux);
             } else {
                 let travauxFiltres = filtrerTravaux(travaux, categories, filtreActif, 1);
-                viderGallery();
                 if (filtreActif === "Tous") {
                     afficherTravaux(travaux);
                 } else {
@@ -192,7 +169,24 @@ export async function genererProjets() {
             }
         });
     }
-    return travaux;
+}
+
+/******** Fonctions qui servent peut être à rien********/
+/**
+ * Fonction qui désactive tout les filtre mais active le filtre tous
+ */
+export function activerFiltreTous() {
+    let balisesFiltres = document.querySelector(".filtres-rapides");
+    for (let i = 0; i < balisesFiltres.length; i++) {
+        const element = balisesFiltres[i];
+        element.classList.remove("filtre-actif");
+        element.classList.remove("filtre-inactif");
+        if (i === 0) {
+            element.classList.add("filtre-actif"); // on crée le premier bouton "tous" avec le filtre actif
+        } else {
+            element.classList.add("filtre-inactif"); // on crée tout les boutons avec le type inactif
+        }
+    }
 }
 
 export async function resetAfichage() {

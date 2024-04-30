@@ -1,32 +1,43 @@
+import { loginPath } from "/scripts/main.js";
 import { resetAfichage, genererProjets } from "/scripts/gallerie.js";
 
 /**
- * Fonction 110 : Affichage de la page d'accueil sur click du bouton projet
+ * Regroupement des fonctions nécessaire à l'initialisation de la partie login
+ */
+export function initLogin() {
+    let baliseLogin = document.querySelector("#affichage-login");
+    baliseLogin.style.display = "none"; // pour éviter la présence de login au chargement de la page initial
+    pageAccueil(); //pour rediriger vers l'accueil en cas d'appui sur l'onglet "projets"
+    pageLogin();
+}
+
+/**
+ * Affichage de la page d'accueil sur click du bouton projet
  */
 let boutonProjet = document.querySelector(".projets");
-export function pageAccueil() {
+function pageAccueil() {
     boutonProjet.addEventListener("click", (event) => {
         afficherPageAccueil();
     });
 }
 
 /**
- * Fonction 111 : Affichage de la page d'accueil
+ * Affichage de la page d'accueil
  */
 let baliseProjet = document.querySelector("#affichage-projets");
 let baliseLogin = document.querySelector("#affichage-login");
-export function afficherPageAccueil() {
+function afficherPageAccueil() {
     boutonLogin.style.fontWeight = "400";
     baliseLogin.style.display = "none";
     baliseProjet.style.display = "block";
 }
 
 /**
- * Fonction 120 : Affichage de la page de login au click suivant l'état connecté ou deconnecté
+ * Affichage de la page de login au click suivant l'état connecté ou deconnecté
  */
 let boutonLogin = document.querySelector(".login");
 let baliseModifier = document.querySelector(".modifier");
-export async function pageLogin() {
+async function pageLogin() {
     boutonLogin.addEventListener("click", () => {
         resetAfichage();
         if (boutonLogin.innerText === "logout") {
@@ -47,37 +58,36 @@ export async function pageLogin() {
 }
 
 /**
- * Fonction 121 :Affichage de la page login
+ * Affichage de la page login
  */
-export function afficherPageLogin() {
+function afficherPageLogin() {
     boutonLogin.style.fontWeight = "800";
     baliseLogin.style.display = "block";
     baliseProjet.style.display = "none";
 }
 
-/**
- * Fonction 130 : regroupement des fonctions nécessaire à l'initialisation de la partie login
- */
-export function initLogin() {
-    let baliseLogin = document.querySelector("#affichage-login");
-    baliseLogin.style.display = "none"; // pour éviter la présence de login au chargement de la page initial
-    pageAccueil(); //pour rediriger vers l'accueil en cas d'appui sur l'onglet "projets"
-    pageLogin();
-}
+// On réagi à l'appui sur le bouton "Se connecter"
+let baliseFormulaire = document.querySelector("#formulaire");
+baliseFormulaire.addEventListener("submit", async function (event) {
+    testerConnexion(event); // on récupère le token
+});
 
 /**
- * Fonction main de la partie login:  pour tester le couple identiofiant mot de passe
+ * Connexion suivant mdp et id
  * @param {*} event
  */
-export async function testerConnexion(event) {
+async function testerConnexion(event) {
     event.preventDefault();
+
+    //partie mail
     let baliseMail = document.querySelector("#login-email");
-    let mailValue = baliseMail.value; // on récupère la valeur du formulaire contenant le mail
+    let mailValue = baliseMail.value;
+
+    // partie mdp
     let balisePassword = document.querySelector("#password");
-    let passwordValue = balisePassword.value; // on récupèree la valeur dans le formulaire cotnenant le mdp
+    let passwordValue = balisePassword.value;
 
     try {
-        const loginPath = "http://localhost:5678/api/users/login"; // route pour tester le couple id/mdp
         const objetLogin = {
             // objet a envoyer lors de la requete
             method: "POST",
@@ -102,9 +112,9 @@ export async function testerConnexion(event) {
             let boutonLogin = document.querySelector(".login");
             boutonLogin.innerText = "logout";
             let baliseModifier = document.querySelector(".modifier");
-            baliseModifier.style.display = "flex";
+            baliseModifier.style.display = "flex"; // afichage de la div Modifier permettant l'ouvezrture de la modale
             let baliseFiltres = document.querySelector(".filtres");
-            baliseFiltres.classList.remove("afficher-les-boutons");
+            baliseFiltres.classList.remove("afficher-les-boutons"); // on cache les boutons filtres
             baliseFiltres.classList.add("cacher-les-boutons");
         }
     } catch (error) {
