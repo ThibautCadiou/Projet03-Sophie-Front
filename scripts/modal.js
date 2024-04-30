@@ -1,13 +1,12 @@
 import { afficherTravaux, recupererTravaux } from "/scripts/gallerie.js";
-import { workPath } from "/scripts/main.js";
 import { recupererCategories } from "/scripts/gallerie.js";
 
 /**
- * Fonction 200 : gère l'ouverture de la modale
+ * Gère l'ouverture de la modale
  */
 export async function ouvertureModal() {
     // on réaffiche la totalité des travaux dans la fenetre principale
-    let travaux = await recupererTravaux(workPath);
+    let travaux = await recupererTravaux();
     afficherTravaux(travaux);
 
     const baliseModal = document.querySelector(".modal");
@@ -19,6 +18,8 @@ export async function ouvertureModal() {
         baliseModal.classList.remove("hidden"); // on affiche la modale
     });
 }
+
+/******** Fonctions qui servent peut être à rien********/
 
 /**
  * Fonction pour vider la mini gallery
@@ -66,7 +67,6 @@ let baliseGallery = document.querySelector(".modal-gallery");
 let baliseBackArrow = document.querySelector(".back-modal");
 let balisemodalAddPhoto = document.querySelector(".modal-add-photo");
 let baliseAjoutPhoto = document.querySelector(".ajout-photo");
-
 export async function setModalToAddPicture() {
     baliseModalTitle.textContent = "Ajout photo"; // titre
     baliseGallery.style.display = "none"; // on cache la gallerie
@@ -103,6 +103,8 @@ export function setModalToNormal() {
     baliseModalTitle.textContent = "Gallerie photo";
     baliseGallery.style.display = "grid";
     baliseAjoutPhoto.textContent = "Ajouter une photo";
+    baliseAjoutPhoto.classList.remove("btnValiderGris");
+    baliseAjoutPhoto.classList.remove("desactiver-boutons");
     baliseBackArrow.style.display = "none";
     balisemodalAddPhoto.style.display = "none";
     baliseRechercheInfosImage.style.display = "flex";
