@@ -22,30 +22,23 @@ export async function recupererCategories() {
 }
 
 /**
- * Fonction 020 de la partie gallerie: Fonction qui génère les boutons de filtrage des projets
- * @param {Array} categories Liste des catégories (sans TOUS) avec leurs identifiants et leurs nom
- * @returns Une liste d'objet {id: <string>, name: <string>}comportant les catégories avec Tous ajoutés
+ *
+ * @returns l'ensemble des catégories incluant "Tous"
  */
 export async function genererBouttons() {
     const categories = await recupererCategories();
-    let categoriesAvecTous = [{ id: 0, name: "Tous" }]; // on crée l'ensemble des catégories en ajoutant "Tous"
+    let categoriesAvecTous = [{ id: 0, name: "Tous" }]; // on initialise une liste pour créer les boutons des filtres en ajoutant "tous"
     categoriesAvecTous.push(...categories); //on ajoute les catégories récupérées depuis l'API
     let balisePortfolio = document.querySelector(".filtres"); // élément parent pour l'ajout des boutons
     for (let i = 0; i < categoriesAvecTous.length; i++) {
         const element = categoriesAvecTous[i];
         let baliseElementEnfant = document.createElement("button");
-        if (i === 0) {
-            baliseElementEnfant.classList.add("filtre-actif");
-        } else {
-            baliseElementEnfant.classList.add("filtre-inactif");
-        }
+        i === 0 ? baliseElementEnfant.classList.add("filtre-actif") : baliseElementEnfant.classList.add("filtre-inactif"); //c'est le style suivant actif ou inactif. on initialise "tous" a actif
         baliseElementEnfant.classList.add("filtres-rapides"); // c'est le style des boutons
-
         baliseElementEnfant.innerText = element.name;
-        baliseElementEnfant.id = element.name.split(" ")[0].toLowerCase();
+        //baliseElementEnfant.id = element.name.split(" ")[0].toLowerCase(); // on ajoute en id le premier mot du nom de la categorie en minuscule
         balisePortfolio.appendChild(baliseElementEnfant);
     }
-
     return categoriesAvecTous;
 }
 
