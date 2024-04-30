@@ -1,10 +1,12 @@
 import { afficherTravaux, recupererTravaux, recupererCategories } from "/scripts/gallerie.js";
+import { cliqueSurCorbeilles } from "/scripts/suppress-work.js";
 
 export async function creerMiniTravaux() {
     let travaux = await recupererTravaux();
     afficherMiniTravaux(travaux);
 }
 
+// Ouverture de la modale
 const baliseOpenButton = document.querySelector(".modifier");
 // creation de la modale pour l'ajout de photo
 baliseOpenButton.addEventListener("click", (event) => {
@@ -16,6 +18,8 @@ baliseOpenButton.addEventListener("click", (event) => {
 
     let travaux = recupererTravaux();
     afficherTravaux(travaux);
+
+    cliqueSurCorbeilles();
 });
 
 /**
@@ -56,7 +60,6 @@ async function setModalToAddPicture() {
 
 const baliseAjouterPhoto = document.querySelector(".ajout-photo");
 baliseAjouterPhoto.addEventListener("click", (event) => {
-    console.log("cliqué");
     setModalToAddPicture();
 });
 

@@ -1,5 +1,5 @@
 import { recupererTravaux, afficherTravaux, viderGallery } from "/scripts/gallerie.js";
-import { viderMinyGallery } from "/scripts/modal.js";
+import { creerMiniTravaux, viderMinyGallery } from "/scripts/modal.js";
 
 /**
  * Fonction qui permet de renvoyer l'id d'un travail que l'on souhaite supprimer en fonction de l'url de l'image de ce meme travail
@@ -17,8 +17,8 @@ function renvoyerIdFromUrl(url, travaux) {
  * Fonction qui supprime le travail lors du click sur la poubelle associée
  * @param {*} event l'event lié au click sur une trashcan
  */
-export async function supprimerTravail(event) {
-    let travaux = recupererTravaux();
+async function supprimerTravail(event) {
+    let travaux = await recupererTravaux();
     const elementClique = event.target;
 
     const parent = elementClique.parentElement; // on recupere le parent
@@ -40,25 +40,23 @@ export async function supprimerTravail(event) {
     console.log(response);
 }
 
-/**
- * Fonction qui gère la suppression des travaux lors de lappui sur la petit corbeille dans la modale
- * @param {*} baliseMiniTravaux Les balises des mini travaux affichés dans la modale
- * @param {*} travaux L'ensemble des travaux récupérés depuis l'API
- */
-export async function cliqueSurCorbeilles(baliseMiniTravaux) {
+export async function cliqueSurCorbeilles() {
+    const baliseMiniTravaux = document.querySelectorAll(".myCard");
     for (let i = 0; i < baliseMiniTravaux.length; i++) {
         const element = baliseMiniTravaux[i];
         element.addEventListener("click", async function (event) {
             await supprimerTravail(event);
-            let tandc = await recupererTravauxEtCategories();
-            const newTravaux = await tandc[0];
-            viderGallery();
-            viderMinyGallery();
-            await afficherTravaux(newTravaux);
-            baliseMiniTravaux = await afficherMiniTravaux(newTravaux);
-            cliqueSurCorbeilles(baliseMiniTravaux);
+            const newTravaux = recupererTravaux();
+            await majGalleries();
         });
     }
 }
 
-export async function majGalleries() {}
+async function majGalleries() {
+    viderGallery();
+    viderMinyGallery();
+
+    let travaux = recupererTravaux();
+    afficherTravaux(travaux);
+    creerMiniTravaux(travaux);
+}
