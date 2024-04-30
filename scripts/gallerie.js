@@ -158,7 +158,6 @@ export async function genererProjets() {
             filtreActif = toggleButton(event.target.id, filtreActif);
             viderGallery();
             if (filtreActif === -1) {
-                afficherTravaux(travaux);
             } else {
                 let travauxFiltres = filtrerTravaux(travaux, categories, filtreActif, 1);
                 if (filtreActif === "Tous") {
