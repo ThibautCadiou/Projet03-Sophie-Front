@@ -119,6 +119,8 @@ const baliseModal = document.querySelector(".modal");
 const closeModal = (event) => {
     baliseOverlay.classList.add("hidden");
     baliseModal.classList.add("hidden");
+    baliseAjoutPhoto.classList.remove("btnValiderGris");
+    baliseAjoutPhoto.classList.remove("desactiver-boutons");
 };
 
 const baliseCloseButton = document.querySelector(".close-modal");
