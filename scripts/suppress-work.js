@@ -50,7 +50,7 @@ export async function cliqueSurCorbeilles(baliseMiniTravaux, travaux) {
         const element = baliseMiniTravaux[i];
         element.addEventListener("click", async function (event) {
             await supprimerTravail(event, travaux);
-            let tandc = await recupererTravauxEtCategories(workPath, catPath);
+            let tandc = await recupererTravauxEtCategories();
             const newTravaux = await tandc[0];
             viderGallery();
             viderMinyGallery();
@@ -60,3 +60,5 @@ export async function cliqueSurCorbeilles(baliseMiniTravaux, travaux) {
         });
     }
 }
+
+export async function majGalleries() {}

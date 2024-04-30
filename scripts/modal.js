@@ -118,7 +118,7 @@ baliseBackArrow.addEventListener("click", (event) => {
 });
 
 const baliseModal = document.querySelector(".modal");
-const closeModal = (event) => {
+export const closeModal = (event) => {
     baliseOverlay.classList.add("hidden");
     baliseModal.classList.add("hidden");
     baliseAjoutPhoto.classList.remove("btnValiderGris");

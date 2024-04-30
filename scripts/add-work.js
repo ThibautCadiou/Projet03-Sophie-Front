@@ -1,5 +1,6 @@
-import { setModalToAddPicture } from "/scripts/modal.js";
+import { setModalToAddPicture, closeModal, setModalToNormal, afficherMiniTravaux, viderMinyGallery } from "/scripts/modal.js";
 import { addPath } from "/scripts/main.js";
+import { afficherTravaux, recupererTravaux, viderGallery, resetAfichage } from "/scripts/gallerie.js";
 
 /**
  * Fonction qui vérifie que les champs sont bien remplis afin de pouvoir Valider l'envoi
@@ -47,9 +48,7 @@ baliseAjouterPhoto.addEventListener("click", () => {
         let fichiers = [];
         fichiers = event.target.files;
         myFile = fichiers[0];
-        console.log(typeof myFile);
         cheminFichier = URL.createObjectURL(fichiers[0]);
-        console.log(typeof cheminFichier);
         baliseImgageFichierAAjouter.src = cheminFichier;
 
         let baliseRechercheInfosImage = document.querySelector(".mode-without-src");
@@ -73,7 +72,19 @@ async function envoyerNewFormdata(myToken, chargeUtile) {
         },
         body: chargeUtile, //JSON.stringify(chargeUtile),
     });
-    console.log(reponse);
+    if (reponse.ok) {
+        console.log("on a reussi a jouter la photo");
+        closeModal();
+        setModalToNormal();
+        resetAfichage();
+
+        // viderGallery();
+        // viderMinyGallery();
+        // let travaux = recupererTravaux();
+        // await afficherTravaux(travaux);
+        // await afficherMiniTravaux(recupererTravaux(travaux));
+    } else {
+    }
 }
 
 let baliseAjoutPhoto = document.querySelector(".ajout-photo");
@@ -83,16 +94,12 @@ baliseAjoutPhoto.addEventListener("click", (event) => {
         //Liste des infos a récupérer pour envoyer le travail
         //titre
         let baliseInputName = document.querySelector("#titre");
-        console.log(baliseInputName.value);
 
         //image
         let baliseInputPath = document.querySelector("#choisir-fichier");
-        const blob = new Blob([baliseInputPath], { type: "image/jpeg" });
-        console.log(blob);
 
         //categorie
         let baliseInputCategorie = document.querySelector("#categorie");
-        console.log(baliseInputCategorie.value);
         let categorieId = "1"; //correspondanceCategorieEtId(baliseInputCategorie.value);
         // on trouve la ccorepsondance entre la catégorie et l'id de la categorie
 

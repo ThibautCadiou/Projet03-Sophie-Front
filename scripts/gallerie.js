@@ -1,4 +1,6 @@
 import { workPath, catPath } from "/scripts/main.js";
+import { afficherMiniTravaux, viderMinyGallery } from "/scripts/modal.js";
+
 /**
  * Fonction 010 de la partie gallerie : Récupérer la liste des travaux et des catégories depuis l'API grace aux routes indiquées
  * @param {string} worksPath Le chemin ou l'url de l'api donnant la liste des travaux
@@ -199,8 +201,6 @@ export async function genererProjets() {
     let baliseBoutons = document.querySelectorAll(".filtres button"); //Récupération des bouttons
     let filtreActif = [];
     let travauxFiltres = [...travaux];
-    // viderGallery();
-    // afficherTravaux(travauxFiltres); // on met tous les travaux pour le démarrage
 
     for (let i = 0; i < baliseBoutons.length; i++) {
         const element = baliseBoutons[i];
