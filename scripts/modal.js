@@ -29,7 +29,7 @@ let baliseGallery = document.querySelector(".modal-gallery");
 let baliseBackArrow = document.querySelector(".back-modal");
 let balisemodalAddPhoto = document.querySelector(".modal-add-photo");
 let baliseAjoutPhoto = document.querySelector(".ajout-photo");
-async function setModalToAddPicture() {
+export async function setModalToAddPicture() {
     baliseModalTitle.textContent = "Ajout photo"; // titre
     baliseGallery.style.display = "none"; // on cache la gallerie
     baliseAjoutPhoto.textContent = "Valider"; // on change le texte du bouton valider
@@ -66,7 +66,7 @@ baliseAjouterPhoto.addEventListener("click", (event) => {
  * Fonction qui gère l'affichage de la modale en mode 1
  */
 let baliseRechercheInfosImage = document.querySelector(".mode-without-src");
-function setModalToNormal() {
+export function setModalToNormal() {
     baliseModalTitle.textContent = "Gallerie photo";
     baliseGallery.style.display = "grid";
     baliseAjoutPhoto.textContent = "Ajouter une photo";
@@ -90,7 +90,7 @@ baliseBackArrow.addEventListener("click", (event) => {
 
 // Fonction qui permet de cacher la modale et l'overlay
 const baliseModal = document.querySelector(".modal");
-const closeModal = (event) => {
+export const closeModal = (event) => {
     baliseOverlay.classList.add("hidden");
     baliseModal.classList.add("hidden");
     baliseAjoutPhoto.classList.remove("btnValiderGris");
@@ -127,7 +127,7 @@ document.addEventListener("keydown", (event) => {
 /**
  * Génère les minitravaux dans la miniGallery
  */
-async function afficherMiniTravaux(travaux) {
+export async function afficherMiniTravaux(travaux) {
     for (let i = 0; i < travaux.length; i++) {
         const element = travaux[i];
         let baliseIncrustationPhotos = document.querySelector(".modal-gallery");

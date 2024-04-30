@@ -2,6 +2,7 @@ import { genererProjets } from "/scripts/gallerie.js";
 import { initLogin } from "/scripts/login.js";
 import { creerMiniTravaux } from "/scripts/modal.js";
 import { suppressionTravail } from "/scripts/suppress-work.js";
+import {} from "/scripts/add-work.js";
 
 /*
 import {} from "/scripts/add-work.js";
@@ -15,7 +16,6 @@ export const loginPath = "http://localhost:5678/api/users/login";
 
 // ******** Main ********
 await genererProjets(); // pour générer la page de base
-initLogin(); // On réagi à l'appui sur l'onglet login
-let balisesMiniPoubelles = await creerMiniTravaux();
-
-suppressionTravail();
+await initLogin(); // On réagi à l'appui sur l'onglet login
+await creerMiniTravaux();
+await suppressionTravail();

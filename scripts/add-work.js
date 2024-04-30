@@ -48,8 +48,6 @@ baliseAjouterPhoto.addEventListener("click", () => {
         let fichiers = [];
         fichiers = event.target.files;
         myFile = fichiers[0];
-        cheminFichier = URL.createObjectURL(fichiers[0]);
-        baliseImgageFichierAAjouter.src = cheminFichier;
 
         let baliseRechercheInfosImage = document.querySelector(".mode-without-src");
         baliseRechercheInfosImage.style.display = "none";
@@ -87,31 +85,35 @@ async function envoyerNewFormdata(myToken, chargeUtile) {
     }
 }
 
-let baliseAjoutPhoto = document.querySelector(".ajout-photo");
-baliseAjoutPhoto.addEventListener("click", (event) => {
+let baliseParentAjoutPhoto = document.querySelector(".modal");
+const baliseAjoutPhoto = document.querySelector(".ajout-photo");
+baliseParentAjoutPhoto.addEventListener("click", function (event) {
     const innerTextValue = baliseAjoutPhoto.innerText;
-    if (innerTextValue === "Valider") {
-        //Liste des infos a récupérer pour envoyer le travail
-        //titre
-        let baliseInputName = document.querySelector("#titre");
+    console.log(innerTextValue);
+    if (event.target.classList.contains("ajout-photo")) {
+        if (innerTextValue === "Valider") {
+            //Liste des infos a récupérer pour envoyer le travail
+            //titre
+            let baliseInputName = document.querySelector("#titre");
 
-        //image
-        let baliseInputPath = document.querySelector("#choisir-fichier");
+            //image
+            let baliseInputPath = document.querySelector("#choisir-fichier");
 
-        //categorie
-        let baliseInputCategorie = document.querySelector("#categorie");
-        let categorieId = "1"; //correspondanceCategorieEtId(baliseInputCategorie.value);
-        // on trouve la ccorepsondance entre la catégorie et l'id de la categorie
+            //categorie
+            let baliseInputCategorie = document.querySelector("#categorie");
+            let categorieId = "1"; //correspondanceCategorieEtId(baliseInputCategorie.value);
+            // on trouve la ccorepsondance entre la catégorie et l'id de la categorie
 
-        //on créer l'object formdata
-        const newWork = new FormData(); //créer un objet
-        newWork.append("title", baliseInputName.value);
-        newWork.append("image", myFile, "raoul-droog.jpg"); //baliseInputPath.value); //imageUrl
-        newWork.append("category", categorieId); //categoryId
+            //on créer l'object formdata
+            const newWork = new FormData(); //créer un objet
+            newWork.append("title", baliseInputName.value);
+            newWork.append("image", myFile, "raoul-droog.jpg"); //baliseInputPath.value); //imageUrl
+            newWork.append("category", categorieId); //categoryId
 
-        const myToken = localStorage.getItem("token");
-        envoyerNewFormdata(myToken, newWork);
-    } else {
-        setModalToAddPicture();
+            const myToken = localStorage.getItem("token");
+            envoyerNewFormdata(myToken, newWork);
+        } else {
+            setModalToAddPicture();
+        }
     }
 });
