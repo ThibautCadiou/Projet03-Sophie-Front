@@ -56,7 +56,8 @@ async function majGalleries() {
     viderGallery();
     viderMinyGallery();
 
-    let travaux = recupererTravaux();
-    afficherTravaux(travaux);
-    creerMiniTravaux(travaux);
+    let travaux = await recupererTravaux();
+    console.log(travaux);
+    await afficherTravaux(travaux);
+    await creerMiniTravaux(travaux);
 }
