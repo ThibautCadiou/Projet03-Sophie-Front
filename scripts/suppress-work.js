@@ -1,6 +1,5 @@
-import { recupererTravaux, recupererTravauxEtCategories, afficherTravaux, viderGallery } from "/scripts/gallerie.js";
+import { recupererTravaux, afficherTravaux, viderGallery } from "/scripts/gallerie.js";
 import { afficherMiniTravaux, viderMinyGallery } from "/scripts/modal.js";
-import { workPath, catPath } from "/scripts/main.js";
 
 /**
  * Fonction qui permet de renvoyer l'id d'un travail que l'on souhaite supprimer en fonction de l'url de l'image de ce meme travail

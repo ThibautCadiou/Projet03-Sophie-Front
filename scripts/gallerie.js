@@ -1,27 +1,7 @@
 import { workPath, catPath } from "/scripts/main.js";
-import { afficherMiniTravaux, viderMinyGallery } from "/scripts/modal.js";
 
 /**
- * Fonction 010 de la partie gallerie : Récupérer la liste des travaux et des catégories depuis l'API grace aux routes indiquées
- * @param {string} worksPath Le chemin ou l'url de l'api donnant la liste des travaux
- * @param {string} catPath Le chemin ou l'url de l'API donnant la lits edes catégories
- * @returns {Array} une liste dont le premier élément est la liste des travaux et le second la liste des catégories
- */
-export async function recupererTravauxEtCategories() {
-    // Récupération des travaux
-    const reponseWorks = await fetch(workPath);
-    const travaux = await reponseWorks.json();
-
-    // Récupération des catégories
-    const reponseCategories = await fetch(catPath);
-    const categories = await reponseCategories.json();
-    return [travaux, categories];
-}
-
-/**
- * Fonction 011 de la partie gallerie : Récupérer la liste des travaux depuis l'API grace aux routes indiquées
- * @param {*} workPath
- * @returns
+ * @returns la liste des travaux
  */
 export async function recupererTravaux() {
     // Récupération des travaux
@@ -31,9 +11,8 @@ export async function recupererTravaux() {
 }
 
 /**
- * Fonction 012 de la partie gallerie : Récupérer la liste des categories depuis l'API grace aux routes indiquées
- * @param {*} worksPath
- * @returns
+ *
+ * @returns liste des categories
  */
 export async function recupererCategories() {
     // Récupération des travaux
@@ -47,17 +26,18 @@ export async function recupererCategories() {
  * @param {Array} categories Liste des catégories (sans TOUS) avec leurs identifiants et leurs nom
  * @returns Une liste d'objet {id: <string>, name: <string>}comportant les catégories avec Tous ajoutés
  */
-export function genererBouttons(categories) {
-    let categoriesAvecTous = [{ id: 0, name: "Tous" }]; // on crée mla catégorie Tous pour créer le bouton de filtrage asocié
+export async function genererBouttons() {
+    const categories = await recupererCategories();
+    let categoriesAvecTous = [{ id: 0, name: "Tous" }]; // on crée l'ensemble des catégories en ajoutant "Tous"
     categoriesAvecTous.push(...categories); //on ajoute les catégories récupérées depuis l'API
     let balisePortfolio = document.querySelector(".filtres"); // élément parent pour l'ajout des boutons
     for (let i = 0; i < categoriesAvecTous.length; i++) {
         const element = categoriesAvecTous[i];
         let baliseElementEnfant = document.createElement("button");
         if (i === 0) {
-            baliseElementEnfant.classList.add("filtre-actif"); // on crée le premier bouton "tous" avec le filtre actif
+            baliseElementEnfant.classList.add("filtre-actif");
         } else {
-            baliseElementEnfant.classList.add("filtre-inactif"); // on crée tout les boutons avec le type inactif
+            baliseElementEnfant.classList.add("filtre-inactif");
         }
         baliseElementEnfant.classList.add("filtres-rapides"); // c'est le style des boutons
 
@@ -190,10 +170,8 @@ export function filtrerTravaux(travaux, categories, filtreActif, verbose = 0) {
  * @returns la liste de tout les travaux
  */
 export async function genererProjets() {
-    // On récupère les travaux et les catégories
-    let travauxEtCategories = await recupererTravauxEtCategories(workPath, catPath);
-    let travaux = travauxEtCategories[0];
-    let categories = travauxEtCategories[1];
+    let travaux = await recupererTravaux();
+    let categories = await recupererCategories();
 
     // on génère les boutons avec les infos de la route /categories
     viderBoutons();
