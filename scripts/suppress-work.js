@@ -17,7 +17,7 @@ function renvoyerIdFromUrl(url, travaux) {
  * Fonction qui supprime le travail lors du click sur la poubelle associée
  * @param {*} event l'event lié au click sur une trashcan
  */
-async function supprimerTravail(event) {
+export async function supprimerTravail(event) {
     let travaux = await recupererTravaux();
     const elementClique = event.target;
 
@@ -41,18 +41,20 @@ async function supprimerTravail(event) {
 }
 
 export async function cliqueSurCorbeilles() {
-    const baliseMiniTravaux = document.querySelectorAll(".myCard");
-    for (let i = 0; i < baliseMiniTravaux.length; i++) {
-        const element = baliseMiniTravaux[i];
+    let balisePouvellesMiniTravaux = document.querySelectorAll(".myCard .fa-trash-can");
+    for (let i = 0; i < balisePouvellesMiniTravaux.length; i++) {
+        const element = balisePouvellesMiniTravaux[i];
         element.addEventListener("click", async function (event) {
             await supprimerTravail(event);
-            const newTravaux = recupererTravaux();
             await majGalleries();
+            balisePouvellesMiniTravaux = document.querySelectorAll(".myCard .fa-trash-can");
+            console.log(balisePouvellesMiniTravaux);
         });
     }
+    return balisePouvellesMiniTravaux;
 }
 
-async function majGalleries() {
+export async function majGalleries() {
     viderGallery();
     viderMinyGallery();
 

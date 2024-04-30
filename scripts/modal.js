@@ -4,6 +4,7 @@ import { cliqueSurCorbeilles } from "/scripts/suppress-work.js";
 export async function creerMiniTravaux() {
     let travaux = await recupererTravaux();
     afficherMiniTravaux(travaux);
+    return document.querySelectorAll(".myCard .fa-trash-can");
 }
 
 // Ouverture de la modale
@@ -18,8 +19,6 @@ baliseOpenButton.addEventListener("click", (event) => {
 
     let travaux = recupererTravaux();
     afficherTravaux(travaux);
-
-    cliqueSurCorbeilles();
 });
 
 /**
