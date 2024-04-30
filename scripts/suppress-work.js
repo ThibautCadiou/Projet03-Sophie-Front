@@ -40,6 +40,30 @@ export async function supprimerTravail(event) {
     console.log(response);
 }
 
+/**
+ * Fonction qui supprime le travail lors du click sur la poubelle associée
+ * @param {*} event l'event lié au click sur une trashcan
+ */
+export async function supprimerTravailFromSrc(src) {
+    let travaux = await recupererTravaux();
+
+    const imageUrl = src;
+    const id = renvoyerIdFromUrl(imageUrl, travaux); //on récupère l'id du travail en question
+
+    // on fait la requete pour supprimer le travail
+    const fetchPathForDelete = "http://localhost:5678/api/works/" + id;
+    const myToken = localStorage.getItem("token");
+    let response = await fetch(fetchPathForDelete, {
+        method: "DELETE",
+        headers: {
+            accept: "*/*",
+            Authorization: `Bearer ${myToken}`,
+        },
+        body: { id: id },
+    });
+    console.log(response);
+}
+
 export async function cliqueSurCorbeilles() {
     let balisePouvellesMiniTravaux = document.querySelectorAll(".myCard .fa-trash-can");
     for (let i = 0; i < balisePouvellesMiniTravaux.length; i++) {
@@ -62,4 +86,17 @@ export async function majGalleries() {
     console.log(travaux);
     await afficherTravaux(travaux);
     await creerMiniTravaux(travaux);
+}
+
+export async function suppressionTravail() {
+    let balisePoubellesParent = document.querySelector(".modal-gallery");
+    balisePoubellesParent.addEventListener("click", async function (event) {
+        if (event.target.classList.contains("fa-trash-can")) {
+            const parentElement = event.target.parentNode;
+            const premierEnfant = parentElement.firstChild;
+            console.log(premierEnfant.src);
+            await supprimerTravailFromSrc(premierEnfant.src);
+            majGalleries();
+        }
+    });
 }
