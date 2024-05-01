@@ -37,7 +37,6 @@ export async function supprimerTravail(event) {
         },
         body: { id: id },
     });
-    console.log(response);
 }
 
 /**
@@ -61,7 +60,6 @@ export async function supprimerTravailFromSrc(src) {
         },
         body: { id: id },
     });
-    console.log(response);
 }
 
 export async function cliqueSurCorbeilles() {
@@ -72,7 +70,6 @@ export async function cliqueSurCorbeilles() {
             await supprimerTravail(event);
             await majGalleries();
             balisePouvellesMiniTravaux = document.querySelectorAll(".myCard .fa-trash-can");
-            console.log(balisePouvellesMiniTravaux);
         });
     }
     return balisePouvellesMiniTravaux;
@@ -83,7 +80,6 @@ export async function majGalleries() {
     viderMinyGallery();
 
     let travaux = await recupererTravaux();
-    console.log(travaux);
     await afficherTravaux(travaux);
     await creerMiniTravaux(travaux);
 }
@@ -94,7 +90,6 @@ export async function suppressionTravail() {
         if (event.target.classList.contains("fa-trash-can")) {
             const parentElement = event.target.parentNode;
             const premierEnfant = parentElement.firstChild;
-            console.log(premierEnfant.src);
             await supprimerTravailFromSrc(premierEnfant.src);
             majGalleries();
         }

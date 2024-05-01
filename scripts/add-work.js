@@ -69,16 +69,9 @@ async function envoyerNewFormdata(myToken, chargeUtile) {
         body: chargeUtile, //JSON.stringify(chargeUtile),
     });
     if (reponse.ok) {
-        console.log("on a reussi a jouter la photo");
         closeModal();
         setModalToNormal();
         resetAfichage();
-
-        // viderGallery();
-        // viderMinyGallery();
-        // let travaux = recupererTravaux();
-        // await afficherTravaux(travaux);
-        // await afficherMiniTravaux(recupererTravaux(travaux));
     } else {
     }
 }
@@ -87,7 +80,6 @@ let baliseParentAjoutPhoto = document.querySelector(".modal");
 const baliseAjoutPhoto = document.querySelector(".ajout-photo");
 baliseParentAjoutPhoto.addEventListener("click", function (event) {
     const innerTextValue = baliseAjoutPhoto.innerText;
-    console.log(innerTextValue);
     if (event.target.classList.contains("ajout-photo")) {
         if (innerTextValue === "Valider") {
             //Liste des infos a récupérer pour envoyer le travail
