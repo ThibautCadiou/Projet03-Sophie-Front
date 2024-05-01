@@ -38,6 +38,7 @@ baliseParentMenuDreoulant.addEventListener("change", function (event) {
  * Fonctions qui réagi au click sur " + Ajouter photo"
  */
 let baliseAjouterPhoto = document.querySelector(".add-on-click");
+
 let myFile = null;
 baliseAjouterPhoto.addEventListener("click", () => {
     let baliseChoisirFichier = document.querySelector("#choisir-fichier");
@@ -46,9 +47,14 @@ baliseAjouterPhoto.addEventListener("click", () => {
         let fichiers = [];
         fichiers = event.target.files;
         myFile = fichiers[0];
+        console.table(myFile);
+        console.log(myFile);
+        const objectURL = URL.createObjectURL(myFile); //pour pouvoir récupérer l'url de l'image sélectionnée
 
         let baliseRechercheInfosImage = document.querySelector(".mode-without-src");
         baliseRechercheInfosImage.style.display = "none";
+        const baliseApercuImage = document.querySelector(".image-to-add");
+        baliseApercuImage.src = objectURL;
     });
     baliseChoisirFichier.click();
 });
