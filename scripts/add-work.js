@@ -38,8 +38,6 @@ baliseParentMenuDreoulant.addEventListener("change", function (event) {
  * Fonctions qui réagi au click sur " + Ajouter photo"
  */
 let baliseAjouterPhoto = document.querySelector(".add-on-click");
-let baliseImgageFichierAAjouter = document.querySelector(".image-to-add");
-let cheminFichier = "";
 let myFile = null;
 baliseAjouterPhoto.addEventListener("click", () => {
     let baliseChoisirFichier = document.querySelector("#choisir-fichier");

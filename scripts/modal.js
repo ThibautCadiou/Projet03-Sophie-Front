@@ -1,5 +1,4 @@
 import { afficherTravaux, recupererTravaux, recupererCategories } from "/scripts/gallerie.js";
-import { cliqueSurCorbeilles } from "/scripts/suppress-work.js";
 
 export async function creerMiniTravaux() {
     let travaux = await recupererTravaux();
@@ -150,8 +149,6 @@ export async function afficherMiniTravaux(travaux) {
     }
     // let baliseMiniTravaux = document.querySelectorAll(".fa-trash-can");
 }
-
-/******** Fonctions qui servent peut être à rien********/
 
 /**
  * Fonction pour vider la mini gallery
