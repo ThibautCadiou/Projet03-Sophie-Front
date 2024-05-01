@@ -1,4 +1,5 @@
 import { workPath, catPath } from "/scripts/main.js";
+import { afficherMiniTravaux, viderMinyGallery } from "/scripts/modal.js";
 
 /**
  * @returns la liste des travaux
@@ -194,4 +195,6 @@ export async function resetAfichage() {
     const categorie = await recupererCategories();
     viderGallery();
     afficherTravaux(travaux);
+    viderMinyGallery();
+    afficherMiniTravaux(travaux);
 }

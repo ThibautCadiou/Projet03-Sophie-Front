@@ -1,4 +1,4 @@
-import { setModalToAddPicture, closeModal, setModalToNormal, afficherMiniTravaux, viderMinyGallery } from "/scripts/modal.js";
+import { setModalToAddPicture, closeModal, setModalToNormal } from "/scripts/modal.js";
 import { addPath } from "/scripts/main.js";
 import { recupererCategories, resetAfichage } from "/scripts/gallerie.js";
 
@@ -12,9 +12,11 @@ function verifierChamps(b1, b2, b3) {
     if (b1.value === "" || b2.value === "" || b3.value === "none") {
         baliseAjoutPhoto.classList.add("btnValiderGris");
         baliseAjoutPhoto.classList.add("desactiver-boutons");
+        canSendWork = false;
     } else {
         baliseAjoutPhoto.classList.remove("btnValiderGris");
         baliseAjoutPhoto.classList.remove("desactiver-boutons");
+        canSendWork = true;
     }
 }
 //add event listeners sur  la photo
@@ -100,6 +102,8 @@ async function envoyerNewFormdata(myToken, chargeUtile) {
         resetAfichage();
     } else {
     }
+
+    console.log("travail envoyé");
 }
 
 let baliseInputName = document.querySelector("#titre");
@@ -109,12 +113,12 @@ baliseInputName.addEventListener("change", () => {
     console.log(`On a récupérer le titre suivante' : ${workTitle}`);
 });
 
-let baliseParentAjoutPhoto = document.querySelector(".modal");
-const baliseAjoutPhoto = document.querySelector(".ajout-photo");
-baliseParentAjoutPhoto.addEventListener("click", function (event) {
-    const innerTextValue = baliseAjoutPhoto.innerText;
+export let canSendWork = false;
+let baliseAjoutPhoto = document.querySelector(".ajout-photo");
+baliseAjoutPhoto.addEventListener("click", function (event) {
+    // let innerTextValue = baliseAjoutPhoto.innerText;
     if (event.target.classList.contains("ajout-photo")) {
-        if (innerTextValue === "Valider") {
+        if (canSendWork) {
             //Liste des infos a récupérer pour envoyer le travail
             //titre
             //             console.log(`
@@ -130,9 +134,12 @@ baliseParentAjoutPhoto.addEventListener("click", function (event) {
             newWork.append("category", categorieId);
 
             const myToken = localStorage.getItem("token");
+
             envoyerNewFormdata(myToken, newWork);
+            canSendWork = false;
         } else {
             setModalToAddPicture();
+            canSendWork = true;
         }
     }
 });

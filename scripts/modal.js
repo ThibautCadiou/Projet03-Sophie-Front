@@ -43,6 +43,7 @@ export async function setModalToAddPicture() {
     //pour chaque categories, on récupère le nom , on crée l'élément html "option" et on lajoute au parent
     const baliseParentMenuDreoulant = document.querySelector("#categorie"); // on génère le formulaire avec les valeur pour les catégories
     // on initialise un premier élément vide
+    baliseParentMenuDreoulant.innerHTML = "";
     const categorieName = document.createElement("option");
     categorieName.value = "none";
     categorieName.innerText = " ";
