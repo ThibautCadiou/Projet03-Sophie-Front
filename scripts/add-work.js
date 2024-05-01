@@ -42,7 +42,7 @@ let myFile = null;
 baliseAjouterPhoto.addEventListener("click", () => {
     let baliseChoisirFichier = document.querySelector("#choisir-fichier");
 
-    baliseChoisirFichier.addEventListener("change", (event) => {
+    myFile = baliseChoisirFichier.addEventListener("change", (event) => {
         let fichiers = [];
         fichiers = event.target.files;
         myFile = fichiers[0]; // on fait l'hypothèse que seule un fichier est récupérer
@@ -52,6 +52,8 @@ baliseAjouterPhoto.addEventListener("click", () => {
         baliseRechercheInfosImage.style.display = "none";
         const baliseApercuImage = document.querySelector(".image-to-add");
         baliseApercuImage.src = objectURL;
+        console.log(`On a récupérer l'image suivante' : ${myFile}`);
+        return myFile;
     });
     baliseChoisirFichier.click();
 });
@@ -63,8 +65,6 @@ baliseAjouterPhoto.addEventListener("click", () => {
  */
 async function provideIdFromName(name) {
     const categorie = await recupererCategories();
-    console.log(categorie);
-    console.log(name);
     const myId = categorie.filter(function (categorie) {
         return categorie.name === name;
     })[0].id;
@@ -74,9 +74,9 @@ async function provideIdFromName(name) {
 //Event listeners pour récupérer la catégories en fonction de la selection sur le menu deroulant
 let categorieId = 0;
 let baliseInputCategorie = document.querySelector("#categorie");
-baliseInputCategorie.addEventListener("change", function (event) {
-    categorieId = provideIdFromName(baliseInputCategorie.value);
-    console.log(categorieId);
+baliseInputCategorie.addEventListener("change", async function (event) {
+    categorieId = await provideIdFromName(baliseInputCategorie.value);
+    console.log(`On a récupérer la categorie id suivante : ${categorieId}`);
 });
 
 /**
@@ -103,7 +103,11 @@ async function envoyerNewFormdata(myToken, chargeUtile) {
 }
 
 let baliseInputName = document.querySelector("#titre");
-let workTitle = baliseInputName.addEventListener("change", () => baliseInputName.value);
+let workTitle = "";
+baliseInputName.addEventListener("change", () => {
+    workTitle = baliseInputName.value;
+    console.log(`On a récupérer le titre suivante' : ${workTitle}`);
+});
 
 let baliseParentAjoutPhoto = document.querySelector(".modal");
 const baliseAjoutPhoto = document.querySelector(".ajout-photo");
@@ -113,11 +117,16 @@ baliseParentAjoutPhoto.addEventListener("click", function (event) {
         if (innerTextValue === "Valider") {
             //Liste des infos a récupérer pour envoyer le travail
             //titre
+            //             console.log(`
+            // title       : ${workTitle}
+            // image       : ${myFile}
+            // categorie   : ${categorieId}
+            // `);
 
             //on créer l'object formdata
-            const newWork = new FormData(); //créer un objet
+            const newWork = new FormData();
             newWork.append("title", workTitle);
-            newWork.append("image", myFile); //baliseInputPath.value); //imageUrl
+            newWork.append("image", myFile);
             newWork.append("category", categorieId);
 
             const myToken = localStorage.getItem("token");
