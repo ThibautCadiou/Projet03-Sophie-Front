@@ -9,6 +9,8 @@ import { recupererCategories, resetAfichage } from "/scripts/gallerie.js";
  * @param {*} b3 balise 03 : la catégorie de la photo
  */
 function verifierChamps(b1, b2, b3) {
+    console.log(`can send work avant  : ${canSendWork}`);
+
     if (b1.value === "" || b2.value === "" || b3.value === "none") {
         baliseAjoutPhoto.classList.add("btnValiderGris");
         baliseAjoutPhoto.classList.add("desactiver-boutons");
@@ -18,6 +20,7 @@ function verifierChamps(b1, b2, b3) {
         baliseAjoutPhoto.classList.remove("desactiver-boutons");
         canSendWork = true;
     }
+    console.log(`can send work after : ${canSendWork}`);
 }
 //add event listeners sur  la photo
 let baliseChoisirFichier = document.querySelector("#choisir-fichier");
@@ -48,14 +51,15 @@ baliseAjouterPhoto.addEventListener("click", () => {
         let fichiers = [];
         fichiers = event.target.files;
         myFile = fichiers[0]; // on fait l'hypothèse que seule un fichier est récupérer
-        const objectURL = URL.createObjectURL(myFile); //pour pouvoir récupérer l'url de l'image sélectionnée
-
-        let baliseRechercheInfosImage = document.querySelector(".mode-without-src");
-        baliseRechercheInfosImage.style.display = "none";
-        const baliseApercuImage = document.querySelector(".image-to-add");
-        baliseApercuImage.src = objectURL;
-        console.log(`On a récupérer l'image suivante' : ${myFile}`);
-        return myFile;
+        if (myFile !== undefined || myFile !== null) {
+            const objectURL = URL.createObjectURL(myFile); //pour pouvoir récupérer l'url de l'image sélectionnée
+            let baliseRechercheInfosImage = document.querySelector(".mode-without-src");
+            baliseRechercheInfosImage.style.display = "none";
+            const baliseApercuImage = document.querySelector(".image-to-add");
+            baliseApercuImage.src = objectURL;
+            console.log(`On a récupérer l'image suivante' : ${myFile}`);
+            return myFile;
+        }
     });
     baliseChoisirFichier.click();
 });
@@ -77,8 +81,10 @@ async function provideIdFromName(name) {
 let categorieId = 0;
 let baliseInputCategorie = document.querySelector("#categorie");
 baliseInputCategorie.addEventListener("change", async function (event) {
-    categorieId = await provideIdFromName(baliseInputCategorie.value);
-    console.log(`On a récupérer la categorie id suivante : ${categorieId}`);
+    if (baliseInputCategorie.value !== "none") {
+        categorieId = await provideIdFromName(baliseInputCategorie.value);
+        console.log(`On a récupérer la categorie id suivante : ${categorieId}`);
+    }
 });
 
 /**
@@ -117,6 +123,7 @@ export let canSendWork = false;
 let baliseAjoutPhoto = document.querySelector(".ajout-photo");
 baliseAjoutPhoto.addEventListener("click", function (event) {
     // let innerTextValue = baliseAjoutPhoto.innerText;
+    console.log(`can send work dans envent listeners: ${canSendWork}`);
     if (event.target.classList.contains("ajout-photo")) {
         if (canSendWork) {
             //Liste des infos a récupérer pour envoyer le travail
@@ -139,7 +146,6 @@ baliseAjoutPhoto.addEventListener("click", function (event) {
             canSendWork = false;
         } else {
             setModalToAddPicture();
-            canSendWork = true;
         }
     }
 });
