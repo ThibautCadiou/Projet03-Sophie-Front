@@ -1,6 +1,6 @@
 import { setModalToAddPicture, closeModal, setModalToNormal, afficherMiniTravaux, viderMinyGallery } from "/scripts/modal.js";
 import { addPath } from "/scripts/main.js";
-import { afficherTravaux, recupererTravaux, viderGallery, resetAfichage } from "/scripts/gallerie.js";
+import { recupererCategories, resetAfichage } from "/scripts/gallerie.js";
 
 /**
  * Fonction qui vérifie que les champs sont bien remplis afin de pouvoir Valider l'envoi
@@ -38,7 +38,6 @@ baliseParentMenuDreoulant.addEventListener("change", function (event) {
  * Fonctions qui réagi au click sur " + Ajouter photo"
  */
 let baliseAjouterPhoto = document.querySelector(".add-on-click");
-
 let myFile = null;
 baliseAjouterPhoto.addEventListener("click", () => {
     let baliseChoisirFichier = document.querySelector("#choisir-fichier");
@@ -46,9 +45,7 @@ baliseAjouterPhoto.addEventListener("click", () => {
     baliseChoisirFichier.addEventListener("change", (event) => {
         let fichiers = [];
         fichiers = event.target.files;
-        myFile = fichiers[0];
-        console.table(myFile);
-        console.log(myFile);
+        myFile = fichiers[0]; // on fait l'hypothèse que seule un fichier est récupérer
         const objectURL = URL.createObjectURL(myFile); //pour pouvoir récupérer l'url de l'image sélectionnée
 
         let baliseRechercheInfosImage = document.querySelector(".mode-without-src");
@@ -57,6 +54,29 @@ baliseAjouterPhoto.addEventListener("click", () => {
         baliseApercuImage.src = objectURL;
     });
     baliseChoisirFichier.click();
+});
+
+/**
+ * Fonction qui renvoie l'identifiant associé au nom de la categorie selectionnée dans le menu deroulant
+ * @param {string} name le nom de la valeur de linput da
+ * @returns ns le menu deroulant
+ */
+async function provideIdFromName(name) {
+    const categorie = await recupererCategories();
+    console.log(categorie);
+    console.log(name);
+    const myId = categorie.filter(function (categorie) {
+        return categorie.name === name;
+    })[0].id;
+    return myId;
+}
+
+//Event listeners pour récupérer la catégories en fonction de la selection sur le menu deroulant
+let categorieId = 0;
+let baliseInputCategorie = document.querySelector("#categorie");
+baliseInputCategorie.addEventListener("change", function (event) {
+    categorieId = provideIdFromName(baliseInputCategorie.value);
+    console.log(categorieId);
 });
 
 /**
@@ -72,7 +92,7 @@ async function envoyerNewFormdata(myToken, chargeUtile) {
             accept: "application/json",
             // "Content-Type": "multipart/form-data",
         },
-        body: chargeUtile, //JSON.stringify(chargeUtile),
+        body: chargeUtile,
     });
     if (reponse.ok) {
         closeModal();
@@ -82,6 +102,9 @@ async function envoyerNewFormdata(myToken, chargeUtile) {
     }
 }
 
+let baliseInputName = document.querySelector("#titre");
+let workTitle = baliseInputName.addEventListener("change", () => baliseInputName.value);
+
 let baliseParentAjoutPhoto = document.querySelector(".modal");
 const baliseAjoutPhoto = document.querySelector(".ajout-photo");
 baliseParentAjoutPhoto.addEventListener("click", function (event) {
@@ -90,21 +113,12 @@ baliseParentAjoutPhoto.addEventListener("click", function (event) {
         if (innerTextValue === "Valider") {
             //Liste des infos a récupérer pour envoyer le travail
             //titre
-            let baliseInputName = document.querySelector("#titre");
-
-            //image
-            let baliseInputPath = document.querySelector("#choisir-fichier");
-
-            //categorie
-            let baliseInputCategorie = document.querySelector("#categorie");
-            let categorieId = "1"; //correspondanceCategorieEtId(baliseInputCategorie.value);
-            // on trouve la ccorepsondance entre la catégorie et l'id de la categorie
 
             //on créer l'object formdata
             const newWork = new FormData(); //créer un objet
-            newWork.append("title", baliseInputName.value);
-            newWork.append("image", myFile, "raoul-droog.jpg"); //baliseInputPath.value); //imageUrl
-            newWork.append("category", categorieId); //categoryId
+            newWork.append("title", workTitle);
+            newWork.append("image", myFile); //baliseInputPath.value); //imageUrl
+            newWork.append("category", categorieId);
 
             const myToken = localStorage.getItem("token");
             envoyerNewFormdata(myToken, newWork);
