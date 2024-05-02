@@ -9,7 +9,7 @@ import { recupererCategories, resetAfichage } from "/scripts/gallerie.js";
  * @param {*} b3 balise 03 : la catégorie de la photo
  */
 function verifierChamps(b1, b2, b3) {
-    console.log(`can send work avant  : ${canSendWork}`);
+    // console.log(`can send work avant  : ${canSendWork}`);
 
     if (b1.value === "" || b2.value === "" || b3.value === "none") {
         baliseAjoutPhoto.classList.add("btnValiderGris");
@@ -20,7 +20,7 @@ function verifierChamps(b1, b2, b3) {
         baliseAjoutPhoto.classList.remove("desactiver-boutons");
         canSendWork = true;
     }
-    console.log(`can send work after : ${canSendWork}`);
+    // console.log(`can send work after : ${canSendWork}`);
 }
 //add event listeners sur  la photo
 let baliseChoisirFichier = document.querySelector("#choisir-fichier");
@@ -44,6 +44,9 @@ baliseParentMenuDreoulant.addEventListener("change", function (event) {
  */
 let baliseAjouterPhoto = document.querySelector(".add-on-click");
 let myFile = null;
+let objectURL = null;
+let baliseRechercheInfosImage = document.querySelector(".mode-without-src");
+let baliseImageMinitature = document.querySelector(".photo");
 baliseAjouterPhoto.addEventListener("click", () => {
     let baliseChoisirFichier = document.querySelector("#choisir-fichier");
 
@@ -52,18 +55,26 @@ baliseAjouterPhoto.addEventListener("click", () => {
         fichiers = event.target.files;
         myFile = fichiers[0]; // on fait l'hypothèse que seule un fichier est récupérer
         if (myFile !== undefined || myFile !== null) {
-            const objectURL = URL.createObjectURL(myFile); //pour pouvoir récupérer l'url de l'image sélectionnée
-            let baliseRechercheInfosImage = document.querySelector(".mode-without-src");
+            objectURL = URL.createObjectURL(myFile); //pour pouvoir récupérer l'url de l'image sélectionnée
             baliseRechercheInfosImage.style.display = "none";
             const baliseApercuImage = document.querySelector(".image-to-add");
             baliseApercuImage.src = objectURL;
-            console.log(`On a récupérer l'image suivante' : ${myFile}`);
+            console.log(myFile);
+            console.log(`On a récupérer l'image suivante' : ${myFile.name}`);
+            console.log(`objectURL : ${objectURL}`);
+            baliseImageMinitature.style.display = "flex";
             return myFile;
         }
     });
     baliseChoisirFichier.click();
 });
 
+export function resetImage() {
+    myFile = null;
+    objectURL = null;
+    baliseRechercheInfosImage.style.display = "flex";
+    console.log("On reset Image");
+}
 /**
  * Fonction qui renvoie l'identifiant associé au nom de la categorie selectionnée dans le menu deroulant
  * @param {string} name le nom de la valeur de linput da
@@ -83,7 +94,7 @@ let baliseInputCategorie = document.querySelector("#categorie");
 baliseInputCategorie.addEventListener("change", async function (event) {
     if (baliseInputCategorie.value !== "none") {
         categorieId = await provideIdFromName(baliseInputCategorie.value);
-        console.log(`On a récupérer la categorie id suivante : ${categorieId}`);
+        // console.log(`On a récupérer la categorie id suivante : ${categorieId}`);
     }
 });
 
@@ -108,15 +119,12 @@ async function envoyerNewFormdata(myToken, chargeUtile) {
         resetAfichage();
     } else {
     }
-
-    console.log("travail envoyé");
 }
 
 let baliseInputName = document.querySelector("#titre");
 let workTitle = "";
 baliseInputName.addEventListener("change", () => {
     workTitle = baliseInputName.value;
-    console.log(`On a récupérer le titre suivante' : ${workTitle}`);
 });
 
 export function setCanSendWork(value) {
@@ -126,8 +134,6 @@ export function setCanSendWork(value) {
 export let canSendWork = false;
 let baliseAjoutPhoto = document.querySelector(".ajout-photo");
 baliseAjoutPhoto.addEventListener("click", function (event) {
-    // let innerTextValue = baliseAjoutPhoto.innerText;
-    console.log(`can send work dans envent listeners: ${canSendWork}`);
     if (event.target.classList.contains("ajout-photo")) {
         if (canSendWork) {
             //on créer l'object formdata

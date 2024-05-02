@@ -50,10 +50,10 @@ async function pageLogin() {
             baliseFiltres.classList.remove("cacher-les-boutons");
             baliseFiltres.classList.add("afficher-les-boutons");
             genererProjets();
-            console.log("on viens de faire un logout");
+            // console.log("on viens de faire un logout");
             viderGallery();
         } else {
-            console.log("on viens de faire un click sur login");
+            // console.log("on viens de faire un click sur login");
             afficherPageLogin();
         }
     });
