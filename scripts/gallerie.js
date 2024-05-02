@@ -88,7 +88,7 @@ function toggleButton(buttonId) {
  * @returns
  */
 function filtrerTravaux(travaux, categories, filtreActif) {
-    //on récupère l'id de la catégorie envoyer
+    //on récupère l'id de la catégorie envoyer en recupérant l'objet catégorie qui a le même .name que le innertext compris dans filtre Actif
     let filtreActifId = categories.filter(function (cat) {
         return cat.name === filtreActif;
     });
@@ -164,7 +164,6 @@ export async function genererProjets() {
             viderGallery();
             filtreActif = toggleButton(event.target.id, filtreActif);
             if (filtreActif === -1) {
-                // console.log("pas de filtres activés");
             } else {
                 let travauxFiltres = filtrerTravaux(travaux, categories, filtreActif, 1);
                 if (filtreActif === "Tous") {

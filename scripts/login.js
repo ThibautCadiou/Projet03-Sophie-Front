@@ -50,10 +50,8 @@ async function pageLogin() {
             baliseFiltres.classList.remove("cacher-les-boutons");
             baliseFiltres.classList.add("afficher-les-boutons");
             genererProjets();
-            // console.log("on viens de faire un logout");
             viderGallery();
         } else {
-            // console.log("on viens de faire un click sur login");
             afficherPageLogin();
         }
     });
@@ -71,7 +69,11 @@ function afficherPageLogin() {
 // On réagi à l'appui sur le bouton "Se connecter"
 let baliseFormulaire = document.querySelector("#formulaire");
 baliseFormulaire.addEventListener("submit", async function (event) {
-    testerConnexion(event); // on récupère le token
+    try {
+        testerConnexion(event); // on récupère le token
+    } catch (error) {
+        console.log(`error : ${error}`);
+    }
 });
 
 /**
@@ -100,7 +102,7 @@ async function testerConnexion(event) {
             }),
         };
 
-        const reponse = await fetch(loginPath, objetLogin);
+        let reponse = await fetch(loginPath, objetLogin);
         const responseDeserialized = await reponse.json();
 
         window.localStorage.setItem("token", await responseDeserialized.token);
@@ -108,6 +110,7 @@ async function testerConnexion(event) {
 
         if (reponse.status !== 200) {
             alert("Couple E-mail / Mot de passe invalid");
+            throw new Error(`Mauvaise réponse de l'API (pas 200...!)`);
         } else {
             alert("connexion réussi - redirection vers la page d'accueil");
             afficherPageAccueil();
@@ -120,6 +123,6 @@ async function testerConnexion(event) {
             baliseFiltres.classList.add("cacher-les-boutons");
         }
     } catch (error) {
-        console.log(error);
+        console.log(`on attrape l'erreur suivante :  ${error}`);
     }
 }

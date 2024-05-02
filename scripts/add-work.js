@@ -20,10 +20,10 @@ function verifierChamps(b1, b2, b3) {
         baliseAjoutPhoto.classList.remove("desactiver-boutons");
         canSendWork = true;
     }
-    // console.log(`can send work after : ${canSendWork}`);
 }
+
 //add event listeners sur  la photo
-let baliseChoisirFichier = document.querySelector("#choisir-fichier");
+export let baliseChoisirFichier = document.querySelector("#choisir-fichier");
 baliseChoisirFichier.addEventListener("change", function (event) {
     verifierChamps(baliseChoisirFichier, baliseTitreNewWork, baliseParentMenuDreoulant);
 });
@@ -53,8 +53,6 @@ baliseAjouterPhoto.addEventListener("click", () => {
     baliseChoisirFichier.removeEventListener("change", changementFichier); // on le supprime sil existe deja
     myFile = baliseChoisirFichier.addEventListener("change", changementFichier);
     baliseChoisirFichier.click();
-
-    console.log(`baliseChoisirFichier : ${baliseChoisirFichier.value}`);
 });
 
 const baliseApercuImage = document.querySelector(".image-to-add");
@@ -66,9 +64,6 @@ function changementFichier(event) {
         objectURL = URL.createObjectURL(myFile); //pour pouvoir récupérer l'url de l'image sélectionnée
         baliseRechercheInfosImage.style.display = "none";
         baliseApercuImage.src = objectURL;
-        console.log(myFile);
-        console.log(`On a récupérer l'image suivante' : ${myFile.name}`);
-        console.log(`objectURL : ${objectURL}`);
         baliseImageMinitature.style.display = "flex";
         return myFile;
     }
@@ -79,7 +74,6 @@ export function resetImage() {
     baliseApercuImage.src = null;
     baliseRechercheInfosImage.style.display = "flex";
     baliseChoisirFichier.value = null;
-    console.log("On reset Image");
 }
 /**
  * Fonction qui renvoie l'identifiant associé au nom de la categorie selectionnée dans le menu deroulant
@@ -100,7 +94,6 @@ let baliseInputCategorie = document.querySelector("#categorie");
 baliseInputCategorie.addEventListener("change", async function (event) {
     if (baliseInputCategorie.value !== "none") {
         categorieId = await provideIdFromName(baliseInputCategorie.value);
-        // console.log(`On a récupérer la categorie id suivante : ${categorieId}`);
     }
 });
 
@@ -110,20 +103,25 @@ baliseInputCategorie.addEventListener("change", async function (event) {
  * @param {object} chargeUtile L'objet à envoyer
  */
 async function envoyerNewFormdata(myToken, chargeUtile) {
-    let reponse = await fetch(addPath, {
-        method: "POST",
-        headers: {
-            Authorization: `Bearer ${myToken}`,
-            accept: "application/json",
-            // "Content-Type": "multipart/form-data",
-        },
-        body: chargeUtile,
-    });
-    if (reponse.ok) {
-        closeModal();
-        setModalToNormal();
-        resetAfichage();
-    } else {
+    try {
+        let reponse = await fetch(addPath, {
+            method: "POST",
+            headers: {
+                Authorization: `Bearer ${myToken}`,
+                accept: "application/json",
+                // "Content-Type": "multipart/form-data",
+            },
+            body: chargeUtile,
+        });
+        if (reponse.ok) {
+            closeModal();
+            setModalToNormal();
+            resetAfichage();
+        } else {
+            throw new Error("Informations d'envoie de fichier incorrect");
+        }
+    } catch (error) {
+        console.log(`Erreur : ${error}`);
     }
 }
 

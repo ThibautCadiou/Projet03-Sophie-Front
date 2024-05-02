@@ -1,5 +1,5 @@
 import { afficherTravaux, recupererTravaux, recupererCategories } from "/scripts/gallerie.js";
-import { canSendWork, setCanSendWork, resetImage, baliseAjoutPhoto } from "/scripts/add-work.js";
+import { baliseChoisirFichier, setCanSendWork, resetImage, baliseAjoutPhoto } from "/scripts/add-work.js";
 
 export async function creerMiniTravaux() {
     let travaux = await recupererTravaux();
@@ -77,6 +77,7 @@ export function setModalToNormal() {
     baliseRechercheInfosImage.style.display = "flex";
     const baliseApercuImageToAdd = document.querySelector("#apercu-photo-to-add");
     baliseApercuImageToAdd.src = "";
+    baliseChoisirFichier.value = "";
     const baliseTitreNewWork = document.querySelector("#titre");
     baliseTitreNewWork.value = "";
     const baliseMenuDeroulant = document.querySelector("#categorie");
@@ -97,10 +98,9 @@ export let closeModal = (event) => {
     baliseAjoutPhoto.classList.remove("desactiver-boutons");
     setCanSendWork(false);
     resetImage();
-    // console.log(` on viens de fermer la modale  canSendWork : ${canSendWork}`);
 };
 
-// Event listener sur la creoix pour fermer la fenetre
+// Event listener sur la croix pour fermer la fenetre
 const baliseCloseButton = document.querySelector(".close-modal");
 baliseCloseButton.addEventListener("click", () => {
     closeModal();
@@ -122,8 +122,8 @@ baliseModal.addEventListener("click", (event) => {
 // fonction pour quitter la modale sur un appuie sur la touche escape
 document.addEventListener("keydown", (event) => {
     if (event.key === "Escape" && !baliseModal.classList.contains("hidden")) {
-        setModalToNormal();
         closeModal();
+        setModalToNormal();
     }
 });
 

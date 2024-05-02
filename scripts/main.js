@@ -4,10 +4,6 @@ import { creerMiniTravaux } from "/scripts/modal.js";
 import { suppressionTravail } from "/scripts/suppress-work.js";
 import {} from "/scripts/add-work.js";
 
-/*
-import {} from "/scripts/add-work.js";
-*/
-
 // ******** Paths ********
 export const workPath = "http://localhost:5678/api/works";
 export const catPath = "http://localhost:5678/api/categories";
