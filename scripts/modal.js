@@ -1,4 +1,5 @@
 import { afficherTravaux, recupererTravaux, recupererCategories } from "/scripts/gallerie.js";
+import { canSendWork, setCanSendWork } from "/scripts/add-work.js";
 
 export async function creerMiniTravaux() {
     let travaux = await recupererTravaux();
@@ -90,11 +91,14 @@ baliseBackArrow.addEventListener("click", (event) => {
 
 // Fonction qui permet de cacher la modale et l'overlay
 const baliseModal = document.querySelector(".modal");
-export const closeModal = (event) => {
+export let closeModal = (event) => {
     baliseOverlay.classList.add("hidden");
     baliseModal.classList.add("hidden");
     baliseAjoutPhoto.classList.remove("btnValiderGris");
     baliseAjoutPhoto.classList.remove("desactiver-boutons");
+    setCanSendWork(false);
+    console.log(` on viens de fermer la modale 
+    canSendWork : ${canSendWork}`);
 };
 
 // Event listener sur la creoix pour fermer la fenetre

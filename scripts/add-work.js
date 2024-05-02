@@ -119,6 +119,10 @@ baliseInputName.addEventListener("change", () => {
     console.log(`On a récupérer le titre suivante' : ${workTitle}`);
 });
 
+export function setCanSendWork(value) {
+    canSendWork = value;
+}
+
 export let canSendWork = false;
 let baliseAjoutPhoto = document.querySelector(".ajout-photo");
 baliseAjoutPhoto.addEventListener("click", function (event) {
@@ -126,14 +130,6 @@ baliseAjoutPhoto.addEventListener("click", function (event) {
     console.log(`can send work dans envent listeners: ${canSendWork}`);
     if (event.target.classList.contains("ajout-photo")) {
         if (canSendWork) {
-            //Liste des infos a récupérer pour envoyer le travail
-            //titre
-            //             console.log(`
-            // title       : ${workTitle}
-            // image       : ${myFile}
-            // categorie   : ${categorieId}
-            // `);
-
             //on créer l'object formdata
             const newWork = new FormData();
             newWork.append("title", workTitle);
