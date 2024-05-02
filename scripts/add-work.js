@@ -50,29 +50,35 @@ let baliseImageMinitature = document.querySelector(".photo");
 baliseAjouterPhoto.addEventListener("click", () => {
     let baliseChoisirFichier = document.querySelector("#choisir-fichier");
 
-    myFile = baliseChoisirFichier.addEventListener("change", (event) => {
-        let fichiers = [];
-        fichiers = event.target.files;
-        myFile = fichiers[0]; // on fait l'hypothèse que seule un fichier est récupérer
-        if (myFile !== undefined || myFile !== null) {
-            objectURL = URL.createObjectURL(myFile); //pour pouvoir récupérer l'url de l'image sélectionnée
-            baliseRechercheInfosImage.style.display = "none";
-            const baliseApercuImage = document.querySelector(".image-to-add");
-            baliseApercuImage.src = objectURL;
-            console.log(myFile);
-            console.log(`On a récupérer l'image suivante' : ${myFile.name}`);
-            console.log(`objectURL : ${objectURL}`);
-            baliseImageMinitature.style.display = "flex";
-            return myFile;
-        }
-    });
+    baliseChoisirFichier.removeEventListener("change", changementFichier); // on le supprime sil existe deja
+    myFile = baliseChoisirFichier.addEventListener("change", changementFichier);
     baliseChoisirFichier.click();
+
+    console.log(`baliseChoisirFichier : ${baliseChoisirFichier.value}`);
 });
+
+const baliseApercuImage = document.querySelector(".image-to-add");
+function changementFichier(event) {
+    let fichiers = [];
+    fichiers = event.target.files;
+    myFile = fichiers[0]; // on fait l'hypothèse que seule un fichier est récupérer
+    if (myFile !== undefined || myFile !== null) {
+        objectURL = URL.createObjectURL(myFile); //pour pouvoir récupérer l'url de l'image sélectionnée
+        baliseRechercheInfosImage.style.display = "none";
+        baliseApercuImage.src = objectURL;
+        console.log(myFile);
+        console.log(`On a récupérer l'image suivante' : ${myFile.name}`);
+        console.log(`objectURL : ${objectURL}`);
+        baliseImageMinitature.style.display = "flex";
+        return myFile;
+    }
+}
 
 export function resetImage() {
     myFile = null;
-    objectURL = null;
+    baliseApercuImage.src = null;
     baliseRechercheInfosImage.style.display = "flex";
+    baliseChoisirFichier.value = null;
     console.log("On reset Image");
 }
 /**
@@ -132,7 +138,7 @@ export function setCanSendWork(value) {
 }
 
 export let canSendWork = false;
-let baliseAjoutPhoto = document.querySelector(".ajout-photo");
+export let baliseAjoutPhoto = document.querySelector(".ajout-photo");
 baliseAjoutPhoto.addEventListener("click", function (event) {
     if (event.target.classList.contains("ajout-photo")) {
         if (canSendWork) {

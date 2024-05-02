@@ -1,5 +1,5 @@
 import { afficherTravaux, recupererTravaux, recupererCategories } from "/scripts/gallerie.js";
-import { canSendWork, setCanSendWork, resetImage } from "/scripts/add-work.js";
+import { canSendWork, setCanSendWork, resetImage, baliseAjoutPhoto } from "/scripts/add-work.js";
 
 export async function creerMiniTravaux() {
     let travaux = await recupererTravaux();
@@ -28,7 +28,6 @@ let baliseModalTitle = document.querySelector(".modal-title");
 let baliseGallery = document.querySelector(".modal-gallery");
 let baliseBackArrow = document.querySelector(".back-modal");
 let balisemodalAddPhoto = document.querySelector(".modal-add-photo");
-let baliseAjoutPhoto = document.querySelector(".ajout-photo");
 export async function setModalToAddPicture() {
     baliseModalTitle.textContent = "Ajout photo"; // titre
     baliseGallery.style.display = "none"; // on cache la gallerie
