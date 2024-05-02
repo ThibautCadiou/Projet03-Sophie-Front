@@ -1,5 +1,5 @@
 import { loginPath } from "/scripts/main.js";
-import { resetAfichage, genererProjets } from "/scripts/gallerie.js";
+import { resetAfichage, genererProjets, viderGallery } from "/scripts/gallerie.js";
 
 /**
  * Regroupement des fonctions nécessaire à l'initialisation de la partie login
@@ -49,9 +49,11 @@ async function pageLogin() {
             let baliseFiltres = document.querySelector(".filtres");
             baliseFiltres.classList.remove("cacher-les-boutons");
             baliseFiltres.classList.add("afficher-les-boutons");
-
             genererProjets();
+            console.log("on viens de faire un logout");
+            viderGallery();
         } else {
+            console.log("on viens de faire un click sur login");
             afficherPageLogin();
         }
     });

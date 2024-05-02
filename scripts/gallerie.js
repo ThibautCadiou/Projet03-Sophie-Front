@@ -140,6 +140,7 @@ function turnOffAllButtons(baliseAllButtons) {
 /**
  * Fonction qui génère les boutons de filtrage et gère l'affichage de la gallerie en fonction du filtre cliqué
  */
+let haveBeenInit = false;
 export async function genererProjets() {
     let travaux = await recupererTravaux();
     let categories = await recupererCategories();
@@ -147,7 +148,11 @@ export async function genererProjets() {
     // on génère les boutons avec les infos de la route /categories
     viderBoutons();
     categories = await genererBouttons(categories);
-    afficherTravaux(travaux); // on affiche tous les travaux au début
+
+    if (!haveBeenInit) {
+        afficherTravaux(travaux); // on affiche tous les travaux au début
+        haveBeenInit = true;
+    }
 
     // on réagi à l'appui sur les boutons de filtrage
     let baliseBoutons = document.querySelectorAll("#filtres button"); //Récupération des bouttons
@@ -156,9 +161,10 @@ export async function genererProjets() {
         const element = baliseBoutons[i];
 
         element.addEventListener("click", (event) => {
-            filtreActif = toggleButton(event.target.id, filtreActif);
             viderGallery();
+            filtreActif = toggleButton(event.target.id, filtreActif);
             if (filtreActif === -1) {
+                console.log("pas de filtres activés");
             } else {
                 let travauxFiltres = filtrerTravaux(travaux, categories, filtreActif, 1);
                 if (filtreActif === "Tous") {
